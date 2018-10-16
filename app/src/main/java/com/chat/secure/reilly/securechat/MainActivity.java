@@ -46,8 +46,8 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
     private FirebaseAnalytics mFirebaseAnalytics;
     private EditText mMessageEditText;
     private ImageView mAddMessageImageView;
-    private AdView mAdView;
+    //private AdView mAdView;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
 
@@ -268,9 +268,9 @@ public class MainActivity extends AppCompatActivity implements
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
 
         // Initialize and request AdMob ad.
-        mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        // mAdView = (AdView) findViewById(R.id.adView);
+        // AdRequest adRequest = new AdRequest.Builder().build();
+        // mAdView.loadAd(adRequest);
 
         // Initialize Firebase Measurement.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -369,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements
         return messageToIndex;
     }
 
+    /**
     @Override
     public void onPause() {
         if (mAdView != null) {
@@ -394,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         super.onDestroy();
     }
-
+**/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
