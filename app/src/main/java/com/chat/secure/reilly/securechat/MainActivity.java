@@ -369,12 +369,12 @@ public class MainActivity extends AppCompatActivity implements
         return messageToIndex;
     }
 
-    /**
+
     @Override
     public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
+        //if (mAdView != null) {
+        //    mAdView.pause();
+        //}
         mFirebaseAdapter.stopListening();
         super.onPause();
     }
@@ -382,20 +382,20 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
+        //if (mAdView != null) {
+        //    mAdView.resume();
+        //}
         mFirebaseAdapter.startListening();
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
+        //if (mAdView != null) {
+        //    mAdView.destroy();
+        //}
         super.onDestroy();
     }
-**/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
