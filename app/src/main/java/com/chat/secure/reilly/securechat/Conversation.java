@@ -1,3 +1,5 @@
+package com.chat.secure.reilly.securechat;
+
 import android.support.annotation.NonNull;
 import com.chat.secure.reilly.securechat.FriendlyMessage;
 import java.util.*;
@@ -7,6 +9,8 @@ public class Conversation {
     private String user1;
     private String user2;
 
+    List<FriendlyMessage> messageList = new LinkedList<>();
+
     public Conversation() {
     }
 
@@ -15,7 +19,7 @@ public class Conversation {
         this.user2 = user2;
     }
 
-    List<FriendlyMessage> messageList = new LinkedList<>();
+
 
     public List<FriendlyMessage> getMessageList(){
         return this.messageList;
