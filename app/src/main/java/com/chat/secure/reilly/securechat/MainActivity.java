@@ -80,6 +80,8 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.chat.secure.reilly.securechat.DatabaseOperations.testChatAdd;
+
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -410,8 +412,9 @@ public class MainActivity extends AppCompatActivity implements
                 sendInvitation();
                 return true;
             case R.id.crash_menu:
-                Log.w("Crashlytics", "Crash button clicked");
-                causeCrash();
+                //Log.w("Crashlytics", "Crash button clicked");
+                //causeCrash();
+                testChatAdd();
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
