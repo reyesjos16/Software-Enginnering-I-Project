@@ -28,10 +28,9 @@
 
         <Button
             android:id="@+id/newConversationButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:enabled="false"
+            android:layout_weight="1"
             android:text="New Conversation" />
 
     </LinearLayout>

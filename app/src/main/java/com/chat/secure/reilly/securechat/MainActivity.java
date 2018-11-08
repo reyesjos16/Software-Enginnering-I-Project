@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements
         // Fetch remote config.
         fetchConfig();
 
-
-        Button openOther = (Button)findViewById(R.id.createConversationButton);
+        //test code to switch views
+        Button openOther = (Button)findViewById(R.id.newConversationButton);
 
         openOther.setOnClickListener(new View.OnClickListener() {
             @Override
