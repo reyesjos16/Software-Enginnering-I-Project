@@ -412,9 +412,8 @@ public class MainActivity extends AppCompatActivity implements
                 sendInvitation();
                 return true;
             case R.id.crash_menu:
-                //Log.w("Crashlytics", "Crash button clicked");
-                //causeCrash();
-                testChatAdd();
+                Log.w("Crashlytics", "Crash button clicked");
+                causeCrash();
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
