@@ -48,6 +48,10 @@
         <activity
             android:name=".MessageActivity"
             android:label="@string/title_activity_message"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NewConversationActivity"
+            android:label="@string/title_activity_new_conversation"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

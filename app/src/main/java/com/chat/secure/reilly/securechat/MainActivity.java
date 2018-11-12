@@ -144,12 +144,21 @@ public class MainActivity extends AppCompatActivity implements
         fetchConfig();
 
         //test code to switch views
-        Button openOther = (Button)findViewById(R.id.newConversationButton);
+        Button openOther = (Button)findViewById(R.id.openMessageActivity);
 
         openOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, MessageActivity.class));
+            }
+        });
+
+        Button openNewConversationActivity = (Button)findViewById(R.id.newConversationButton);
+
+        openNewConversationActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, NewConversationActivity.class));
             }
         });
 
