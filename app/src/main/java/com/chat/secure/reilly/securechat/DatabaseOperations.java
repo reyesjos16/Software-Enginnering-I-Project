@@ -12,12 +12,13 @@ public class DatabaseOperations
     private static DatabaseReference mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
     //Static reference to chats child in firebase
-    private static DatabaseReference chats = mFirebaseDatabaseReference.child(CHATS_CHILD);
+
 
     //Posts conv to firebase under chats child
     //Returns a reference to the new chat
     public static DatabaseReference pushChat(Conversation conv)
     {
+        DatabaseReference chats = mFirebaseDatabaseReference.child(CHATS_CHILD);
         DatabaseReference newchat = chats.push();
         newchat.setValue(conv);
         return newchat;
