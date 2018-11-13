@@ -9,6 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import com.google.firebase.database.DatabaseReference;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class NewConversationActivity extends AppCompatActivity {
@@ -29,6 +37,35 @@ public class NewConversationActivity extends AppCompatActivity {
                 //this will hold the text the user entered in the text box
                 String otherUserEmail = getOtherUserEmail.getText().toString();
                 Log.v("The email", otherUserEmail);
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                //!!!!need to check if the user otheruseremail is a registered user
+
+                String deviceUserEmail;
+
+                if(user != null){
+                    deviceUserEmail = user.getEmail();
+                    Log.v("User email", deviceUserEmail);
+
+                    //prints a dialog to the screen
+                    Toast.makeText(getApplicationContext(), "Creating Conversation",
+                            Toast.LENGTH_LONG).show();
+
+
+                    //need to check if conversation alreadt exists
+
+                    //create conversation object
+                    Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
+                    DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
+
+                    //need pass db ref to message activity
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "Not logged in",
+                            Toast.LENGTH_LONG).show();
+                }
+
 
                 //need check if use exists then create conversation
 
