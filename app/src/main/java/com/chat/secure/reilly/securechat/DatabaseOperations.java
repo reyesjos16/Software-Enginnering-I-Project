@@ -15,9 +15,12 @@ public class DatabaseOperations
     private static DatabaseReference chats = mFirebaseDatabaseReference.child(CHATS_CHILD);
 
     //Posts conv to firebase under chats child
-    public static void pushChat(Conversation conv)
+    //Returns a reference to the new chat
+    public static DatabaseReference pushChat(Conversation conv)
     {
-        chats.push().setValue(conv);
+        DatabaseReference newchat = chats.push();
+        newchat.setValue(conv);
+        return newchat;
     }
 
     //Test function created by Jonathan to test pushChat
