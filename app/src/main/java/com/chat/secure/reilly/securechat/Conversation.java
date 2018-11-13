@@ -1,7 +1,7 @@
 package com.chat.secure.reilly.securechat;
 
 import android.support.annotation.NonNull;
-import com.chat.secure.reilly.securechat.FriendlyMessage;
+
 import java.util.*;
 
 public class Conversation {

@@ -55,6 +55,10 @@ import io.fabric.sdk.android.Fabric;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.chat.secure.reilly.securechat.DatabaseOperations.testChatAdd;
+
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
