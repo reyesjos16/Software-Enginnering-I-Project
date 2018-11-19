@@ -8,15 +8,17 @@ public class Conversation {
 
     private String user1;
     private String user2;
+    private String users;
 
     List<FriendlyMessage> messageList = new LinkedList<>();
 
-    public Conversation() {
-    }
+    public Conversation()
+    {}
 
     public Conversation(String user1, String user2){
         this.user1 = user1;
         this.user2 = user2;
+        this.users = this.user1 + ";" + this.user2;
     }
 
 
@@ -40,10 +42,12 @@ public class Conversation {
 
     public void setUser1(String user) {
         user1 = user;
+        users = user1 + users;
     }
 
     public void setUser2(String user) {
         user2 = user;
+        users = users + user2;
     }
 
     public String getUser1() {
