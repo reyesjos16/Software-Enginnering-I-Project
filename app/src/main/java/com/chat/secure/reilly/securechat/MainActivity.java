@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements
                 sendInvitation();
                 return true;
             case R.id.crash_menu:
-                DatabaseOperations.testChatAdd();
+                testChatAdd();
                 //Log.w("Crashlytics", "Crash button clicked");
                 //causeCrash();
                 return true;

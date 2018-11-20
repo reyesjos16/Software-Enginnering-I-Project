@@ -1,7 +1,5 @@
 package com.chat.secure.reilly.securechat;
 
-import android.support.annotation.NonNull;
-
 import java.util.*;
 
 public class Conversation {
@@ -18,7 +16,7 @@ public class Conversation {
     public Conversation(String user1, String user2){
         this.user1 = user1;
         this.user2 = user2;
-        this.users = this.user1 + ";" + this.user2;
+        this.users = "" + this.user1 + ";" + this.user2;
     }
 
 

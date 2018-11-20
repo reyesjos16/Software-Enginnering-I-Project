@@ -63,7 +63,7 @@ public class DatabaseOperations
     {
         Conversation a = new Conversation("userone1", "usertwo2");
         a.addMessage(new FriendlyMessage("working?", "Jonathan", "photourl", "imageurl"));
-        a.addMessage(new FriendlyMessage("yup its working", "Jonathan", "photourl", "imageurl"));
+        a.addMessage(new FriendlyMessage("borked", "Jonathan", "photourl", "imageurl"));
         pushChat(a);
     }
 }
