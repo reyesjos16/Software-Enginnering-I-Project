@@ -1,13 +1,8 @@
 package com.chat.secure.reilly.securechat;
 
-import android.util.Log;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+
 import java.util.*;
 
 public class DatabaseOperations
@@ -22,8 +17,11 @@ public class DatabaseOperations
     //Returns a reference to the new chat
     public static DatabaseReference pushChat(Conversation conv)
     {
-        DatabaseReference newchat = chats.push();
+        DatabaseReference c = FirebaseDatabase.getInstance().getReference().child(CHATS_CHILD);
+
+        DatabaseReference newchat = chats.child(conv.getPrimaryKey());
         newchat.setValue(conv);
+
         return newchat;
     }
 
@@ -34,6 +32,8 @@ public class DatabaseOperations
         conv.child("messageList").push().setValue(message);
 
     }
+
+
 
     //Returns a new reference to chats in firebase
     //private static DatabaseReference getChatRef()

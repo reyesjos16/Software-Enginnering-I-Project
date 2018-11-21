@@ -97,7 +97,9 @@ public class MessageActivity extends AppCompatActivity implements
     }
 
     private static final String TAG = "MainActivity";
-    public static final String MESSAGES_CHILD = "messages";
+    //public static final String MESSAGES_CHILD = "messages";
+    public static final String MESSAGES_CHILD = "messageList";
+
     private static final int REQUEST_INVITE = 1;
     private static final int REQUEST_IMAGE = 2;
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 10;
@@ -159,7 +161,29 @@ public class MessageActivity extends AppCompatActivity implements
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
 
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
+        //convert string path to db ref to databaseRef
+        Bundle extras = getIntent().getExtras();
+
+        //maybe need test
+        //if (extras != null) {
+        String pathToConvo = extras.getString("conversation");
+        //}
+
+        //DatabaseReference convo = mFirebaseDatabaseReference.child(pathToConvo);
+        DatabaseReference convo = FirebaseDatabase.getInstance().getReferenceFromUrl(pathToConvo);
+
+        //DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
+        DatabaseReference messagesRef = convo.child("messageList");
+        DatabaseReference messagesForConvo = convo.child("messageList");
+
+
+
+        mFirebaseDatabaseReference = convo;
+
+
+
+
 
         SnapshotParser<FriendlyMessage> parser = new SnapshotParser<FriendlyMessage>() {
             @Override
@@ -171,8 +195,6 @@ public class MessageActivity extends AppCompatActivity implements
                 return friendlyMessage;
             }
         };
-
-        DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
 
         FirebaseRecyclerOptions<FriendlyMessage> options =
                 new FirebaseRecyclerOptions.Builder<FriendlyMessage>()
@@ -333,7 +355,10 @@ public class MessageActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername,
                         mPhotoUrl, null);
-                mFirebaseDatabaseReference.child(MESSAGES_CHILD).push().setValue(friendlyMessage);
+
+                DatabaseOperations.addMessageToConv(friendlyMessage, mFirebaseDatabaseReference);
+
+                //mFirebaseDatabaseReference.child(MESSAGES_CHILD).push().setValue(friendlyMessage);
                 mMessageEditText.setText("");
                 mFirebaseAnalytics.logEvent(MESSAGE_SENT_EVENT, null);
             }

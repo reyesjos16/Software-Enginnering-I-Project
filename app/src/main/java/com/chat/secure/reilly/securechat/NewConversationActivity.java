@@ -1,5 +1,6 @@
 package com.chat.secure.reilly.securechat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -59,7 +60,19 @@ public class NewConversationActivity extends AppCompatActivity {
                     Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
                     DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
 
+                    String newConvoPath = newConversationDBRefernce.toString();
+
+                    Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
+                    //passes path to db ref as a string
+                    i.putExtra("conversation", newConvoPath);
+
+                    startActivity(i);
+
+
+
                     //need pass db ref to message activity
+
+
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Not logged in",

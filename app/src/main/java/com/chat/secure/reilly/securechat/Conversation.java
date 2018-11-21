@@ -6,7 +6,7 @@ public class Conversation {
 
     private String user1;
     private String user2;
-    private String users;
+    private String primaryKey;
 
     List<FriendlyMessage> messageList = new LinkedList<>();
 
@@ -16,7 +16,7 @@ public class Conversation {
     public Conversation(String user1, String user2){
         this.user1 = user1;
         this.user2 = user2;
-        this.setUsers(user1, user2);
+        this.setPrimaryKey(user1, user2);
     }
 
     public List<FriendlyMessage> getMessageList(){
@@ -46,9 +46,9 @@ public class Conversation {
         user2 = user;
     }
 
-    public void setUsers(String user1, String user2)
+    public void setPrimaryKey(String user1, String user2)
     {
-        this.users = "" + user1 + ";" + user2;
+        this.primaryKey = computeConversationPrimaryKey(user1, user2);
     }
 
     public String getUser1() {
@@ -59,9 +59,25 @@ public class Conversation {
         return user2;
     }
 
-    public String getUsers()
+    public String getPrimaryKey()
     {
-        return users;
+        return primaryKey;
+    }
+
+
+    public static String computeConversationPrimaryKey(String user1, String user2){
+        String u1 = user1.replaceAll("@gmail.com$","");
+        String u2 = user2.replaceAll("@gmail.com$","");
+
+        String pk;
+
+        if(u1.compareTo(u2) < 0){
+            pk = u1 + '-' + u2;
+        }else{
+            pk = u2 + '-' + u1;
+        }
+
+        return pk;
     }
 }
 
