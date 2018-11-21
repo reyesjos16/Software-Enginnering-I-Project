@@ -1,5 +1,6 @@
 package com.chat.secure.reilly.securechat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -48,18 +49,37 @@ public class NewConversationActivity extends AppCompatActivity {
                     deviceUserEmail = user.getEmail();
                     Log.v("User email", deviceUserEmail);
 
-                    //prints a dialog to the screen
-                    Toast.makeText(getApplicationContext(), "Creating Conversation",
-                            Toast.LENGTH_LONG).show();
+                    //is a valid gmail address
+                    if(otherUserEmail.endsWith("@gmail.com")){
+
+                        //need to check if conversation alreadt exists
+
+                        //create conversation object
+                        Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
+                        DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
+
+                        String newConvoPath = newConversationDBRefernce.toString();
+
+                        //prints a dialog to the screen
+                        Toast.makeText(getApplicationContext(), "Creating Conversation",
+                                Toast.LENGTH_LONG).show();
+
+                        Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
+                        //passes path to db ref as a string
+                        i.putExtra("conversation", newConvoPath);
+
+                        startActivity(i);
+
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Enter a gmail address",
+                                Toast.LENGTH_LONG).show();
+                    }
 
 
-                    //need to check if conversation alreadt exists
-
-                    //create conversation object
-                    Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
-                    DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
 
                     //need pass db ref to message activity
+
+
 
                 }else{
                     Toast.makeText(getApplicationContext(), "Not logged in",
