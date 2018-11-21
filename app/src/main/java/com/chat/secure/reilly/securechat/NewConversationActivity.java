@@ -49,24 +49,31 @@ public class NewConversationActivity extends AppCompatActivity {
                     deviceUserEmail = user.getEmail();
                     Log.v("User email", deviceUserEmail);
 
-                    //prints a dialog to the screen
-                    Toast.makeText(getApplicationContext(), "Creating Conversation",
-                            Toast.LENGTH_LONG).show();
+                    //is a valid gmail address
+                    if(otherUserEmail.endsWith("@gmail.com")){
 
+                        //need to check if conversation alreadt exists
 
-                    //need to check if conversation alreadt exists
+                        //create conversation object
+                        Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
+                        DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
 
-                    //create conversation object
-                    Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
-                    DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
+                        String newConvoPath = newConversationDBRefernce.toString();
 
-                    String newConvoPath = newConversationDBRefernce.toString();
+                        //prints a dialog to the screen
+                        Toast.makeText(getApplicationContext(), "Creating Conversation",
+                                Toast.LENGTH_LONG).show();
 
-                    Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
-                    //passes path to db ref as a string
-                    i.putExtra("conversation", newConvoPath);
+                        Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
+                        //passes path to db ref as a string
+                        i.putExtra("conversation", newConvoPath);
 
-                    startActivity(i);
+                        startActivity(i);
+
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Enter a gmail address",
+                                Toast.LENGTH_LONG).show();
+                    }
 
 
 
