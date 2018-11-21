@@ -1,25 +1,23 @@
 package com.chat.secure.reilly.securechat;
 
-import android.support.annotation.NonNull;
-
 import java.util.*;
 
 public class Conversation {
 
     private String user1;
     private String user2;
+    private String users;
 
     List<FriendlyMessage> messageList = new LinkedList<>();
 
-    public Conversation() {
-    }
+    public Conversation()
+    {}
 
     public Conversation(String user1, String user2){
         this.user1 = user1;
         this.user2 = user2;
+        this.setUsers(user1, user2);
     }
-
-
 
     public List<FriendlyMessage> getMessageList(){
         return this.messageList;
@@ -32,9 +30,11 @@ public class Conversation {
     public boolean isMember(String username) {
         if (username.equals(user1)) {
             return true;
-        } else if (username.equals(user2)) {
+        }
+        else if (username.equals(user2)) {
             return true;
-        } else
+        }
+        else
             return false;
     }
 
@@ -46,12 +46,22 @@ public class Conversation {
         user2 = user;
     }
 
+    public void setUsers(String user1, String user2)
+    {
+        this.users = "" + user1 + ";" + user2;
+    }
+
     public String getUser1() {
         return user1;
     }
 
     public String getUser2() {
         return user2;
+    }
+
+    public String getUsers()
+    {
+        return users;
     }
 }
 
