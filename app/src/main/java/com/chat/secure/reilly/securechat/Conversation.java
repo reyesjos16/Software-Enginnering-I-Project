@@ -19,8 +19,6 @@ public class Conversation {
         this.setUsers(user1, user2);
     }
 
-
-
     public List<FriendlyMessage> getMessageList(){
         return this.messageList;
     }
@@ -32,9 +30,11 @@ public class Conversation {
     public boolean isMember(String username) {
         if (username.equals(user1)) {
             return true;
-        } else if (username.equals(user2)) {
+        }
+        else if (username.equals(user2)) {
             return true;
-        } else
+        }
+        else
             return false;
     }
 

@@ -8,7 +8,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.*;
 
 public class DatabaseOperations
@@ -26,6 +25,20 @@ public class DatabaseOperations
         DatabaseReference newchat = chats.push();
         newchat.setValue(conv);
         return newchat;
+    }
+
+
+    //Add message to conversation
+    public static void addMessageToConv(FriendlyMessage message, DatabaseReference conv){
+
+        //check if message attribute in json for conv
+        if(conv.exists("Message") == false){
+            pushChat(conv);
+            conv.setValue(message);
+        }
+        else
+            //add message to conversation
+            conv.setValue(message);
     }
 
     //Returns a new reference to chats in firebase
@@ -64,6 +77,8 @@ public class DatabaseOperations
         Conversation a = new Conversation("userone1", "usertwo2");
         a.addMessage(new FriendlyMessage("working?", "Jonathan", "photourl", "imageurl"));
         a.addMessage(new FriendlyMessage("borked", "Jonathan", "photourl", "imageurl"));
-        pushChat(a);
+       // pushChat(a);
+        DatabaseReference firebaseR = pushChat(a);
+        addMessageToConv(new FriendlyMessage("Sophia is it working?", "Jonathan", "photourl", "imageurl"), firebaseR);
     }
 }
