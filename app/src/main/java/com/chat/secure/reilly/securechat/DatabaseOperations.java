@@ -12,7 +12,7 @@ import java.util.*;
 
 public class DatabaseOperations
 {
-    private static final String CHATS_CHILD = "chatstest";
+    private static final String CHATS_CHILD = "chats";
 
     private static final DatabaseReference root = FirebaseDatabase.getInstance().getReference();
 
@@ -31,14 +31,8 @@ public class DatabaseOperations
     //Add message to conversation
     public static void addMessageToConv(FriendlyMessage message, DatabaseReference conv){
 
-        //check if message attribute in json for conv
-        if(conv.exists("Message") == false){
-            pushChat(conv);
-            conv.setValue(message);
-        }
-        else
-            //add message to conversation
-            conv.setValue(message);
+        conv.child("messageList").push().setValue(message);
+
     }
 
     //Returns a new reference to chats in firebase
@@ -80,5 +74,18 @@ public class DatabaseOperations
        // pushChat(a);
         DatabaseReference firebaseR = pushChat(a);
         addMessageToConv(new FriendlyMessage("Sophia is it working?", "Jonathan", "photourl", "imageurl"), firebaseR);
+    }
+
+    public static void testMessageAdd(){
+        Conversation a = new Conversation("user117", "user118");
+        //a.addMessage(new FriendlyMessage("working?", "Jonathan", "photourl", "imageurl"));
+        //a.addMessage(new FriendlyMessage("borked", "Jonathan", "photourl", "imageurl"));
+
+
+        DatabaseReference firebaseR = pushChat(a);
+        addMessageToConv(new FriendlyMessage("Sophia is it working?", "Jonathan", "photourl", "imageurl"), firebaseR);
+
+        FriendlyMessage m = new FriendlyMessage("borked", "Jonathan", "photourl", "imageurl");
+        addMessageToConv(m, firebaseR);
     }
 }
