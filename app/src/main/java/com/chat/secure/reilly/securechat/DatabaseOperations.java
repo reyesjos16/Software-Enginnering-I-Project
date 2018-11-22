@@ -1,7 +1,9 @@
 package com.chat.secure.reilly.securechat;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.*;
 
@@ -17,8 +19,9 @@ public class DatabaseOperations
     //Returns a reference to the new chat
     public static DatabaseReference pushChat(Conversation conv)
     {
+        //This line is not needed or used
+        //https://stackoverflow.com/questions/43029700/does-initializing-firebasedatabase-getinstance-multiple-times-affect-performan
         DatabaseReference c = FirebaseDatabase.getInstance().getReference().child(CHATS_CHILD);
-
         DatabaseReference newchat = chats.child(conv.getPrimaryKey());
         newchat.setValue(conv);
 
@@ -33,39 +36,22 @@ public class DatabaseOperations
 
     }
 
-
-
-    //Returns a new reference to chats in firebase
-    //private static DatabaseReference getChatRef()
-    //{
-    //
-    //}
-
-
-/*
-    public static void findChat(String user1, String user2)
+    public static boolean chatExists(String user1, String user2)
     {
-        Query chatquery = chats.startAt("userone", "user1").endAt("usertwo", "user2");
-        Log.v("afksaopwlx", "---------------------------------");
-        chatquery.addValueEventListener(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot snapshot){
-                for(DataSnapshot post : snapshot.getChildren())
-                {}
+        if(chats.child(user1 + "-" + user2).getKey() != "")
+        {
+            return true;
+        }
+        else
+        {
+            if(chats.child(user2 + "-" + user1).getKey() != "")
+            {
+                return true;
             }
+        }
+        return false;
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError){}
-        });
-        System.out.println(chatquery);
-    }*/
-
-    //public static void main(String[] args)
-    //{
-    //    findChat("userone", "usertwo");
-    //}
-
-    //Test function created by Jonathan to test pushChat
     public static void testChatAdd()
     {
         Conversation a = new Conversation("userone1", "usertwo2");
