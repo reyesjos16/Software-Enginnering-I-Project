@@ -18,7 +18,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DatabaseError;
 
 public class NewConversationActivity extends AppCompatActivity {
 
@@ -31,53 +36,82 @@ public class NewConversationActivity extends AppCompatActivity {
         Button createConversationButton = (Button)findViewById(R.id.createConversationButton);
         final EditText getOtherUserEmail = (EditText)findViewById(R.id.usernameForNewConversation);
 
-
         createConversationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //this will hold the text the user entered in the text box
-                String otherUserEmail = getOtherUserEmail.getText().toString();
+                final String otherUserEmail = getOtherUserEmail.getText().toString();
                 Log.v("The email", otherUserEmail);
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 //!!!!need to check if the user otheruseremail is a registered user
 
-                String deviceUserEmail;
+                final String deviceUserEmail;
 
                 if(user != null){
                     deviceUserEmail = user.getEmail();
                     Log.v("User email", deviceUserEmail);
 
                     //is a valid gmail address
-                    if(otherUserEmail.endsWith("@gmail.com")){
+                    if(otherUserEmail.endsWith("@gmail.com")) {
 
                         //need to check if conversation alreadt exists
 
-                        //create conversation object
-                        Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
-                        DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
+                        final String key = Conversation.computeConversationPrimaryKey(deviceUserEmail, otherUserEmail);
+                        Log.v("key!!!!", key);
 
-                        String newConvoPath = newConversationDBRefernce.toString();
 
-                        //prints a dialog to the screen
-                        Toast.makeText(getApplicationContext(), "Creating Conversation",
-                                Toast.LENGTH_LONG).show();
+                        final DatabaseReference potentialConvo = FirebaseDatabase.getInstance().getReference().child("chats").child(key);
 
-                        Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
-                        //passes path to db ref as a string
-                        i.putExtra("conversation", newConvoPath);
+                        potentialConvo.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (!dataSnapshot.exists()) {
 
-                        startActivity(i);
+                                    //create conversation object
+                                    Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
+                                    DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
+
+                                    String newConvoPath = newConversationDBRefernce.toString();
+
+                                    //prints a dialog to the screen
+                                    Toast.makeText(getApplicationContext(), "Creating Conversation",
+                                            Toast.LENGTH_LONG).show();
+
+                                    Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
+                                    //passes path to db ref as a string
+                                    i.putExtra("conversation", newConvoPath);
+
+                                    startActivity(i);
+                                } else {
+
+                                    String existingConvo =  potentialConvo.toString();
+
+                                    Toast.makeText(getApplicationContext(), "Conversation Already Exists",
+                                            Toast.LENGTH_LONG).show();
+
+                                    Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
+                                    //passes path to db ref as a string
+                                    i.putExtra("conversation", existingConvo);
+
+                                    startActivity(i);
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
 
                     }else{
                         Toast.makeText(getApplicationContext(), "Enter a gmail address",
                                 Toast.LENGTH_LONG).show();
                     }
-
-
-
-                    //need pass db ref to message activity
 
 
 
@@ -91,9 +125,14 @@ public class NewConversationActivity extends AppCompatActivity {
 
                 //then open message activity with a reference to the message list for the new conversation
             }
+
+
+
+
+
+
+
         });
 
-
     }
-
 }
