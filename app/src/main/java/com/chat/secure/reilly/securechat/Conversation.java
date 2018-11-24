@@ -83,5 +83,17 @@ public class Conversation {
 
         return pk;
     }
+
+    //returns user not equal to currentUser
+    //assumes currentUser is a member of the conversation
+    public String getOtherUser(String currentUser){
+        String otherUser;
+
+        if(!currentUser.equals(this.user1)){
+            return this.user1;
+        }else{
+            return this.user2;
+        }
+    }
 }
 

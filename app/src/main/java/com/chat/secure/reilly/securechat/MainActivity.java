@@ -62,8 +62,10 @@ import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -157,16 +159,6 @@ public class MainActivity extends AppCompatActivity implements
         // Fetch remote config.
         fetchConfig();
 
-        //test code to switch views
-        Button openOther = (Button)findViewById(R.id.openMessageActivity);
-
-        openOther.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, MessageActivity.class));
-            }
-        });
-
         Button openNewConversationActivity = (Button)findViewById(R.id.newConversationButton);
 
         openNewConversationActivity.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +168,44 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
+        //recycler view
+        RecyclerView  rvConversations = (RecyclerView)findViewById(R.id.conversationRecyclerView);
+
+        //test convo list
+        List<Conversation> convoList = new LinkedList<Conversation>();
+
+        convoList.add(new Conversation(mFirebaseUser.getEmail(), "cat@gmail.com"));
+        convoList.add(new Conversation("Cat2@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat3@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat4@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat5@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat6@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat7@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+
+
+
+
+
+
+        ConversationAdapter adapter = new ConversationAdapter(convoList);
+
+        rvConversations.setAdapter(adapter);
+        rvConversations.setLayoutManager(new LinearLayoutManager(this));
+
+        List<Conversation> c2 = new LinkedList<Conversation>();
+        c2.add(new Conversation(mFirebaseUser.getEmail(), "cat@gmail.com"));
+
+
+        adapter.updateList(c2);
         final List<Conversation> chatList = new ArrayList<Conversation>();
 
         final String currentUserEmail = mFirebaseUser.getEmail();
@@ -220,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
 
             }
 
