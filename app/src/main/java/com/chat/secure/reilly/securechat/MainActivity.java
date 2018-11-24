@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 //import com.google.android.gms.ads.AdRequest;
@@ -47,15 +48,23 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import io.fabric.sdk.android.Fabric;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -197,9 +206,62 @@ public class MainActivity extends AppCompatActivity implements
 
 
         adapter.updateList(c2);
+        final List<Conversation> chatList = new ArrayList<Conversation>();
+
+        final String currentUserEmail = mFirebaseUser.getEmail();
+
+        final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference().child("chats");
+        chatRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+
+                //GenericTypeIndicator<Conversation> t = new GenericTypeIndicator<Conversation>();
+
+                //List<Conversation> chatsL = new ArrayList<Conversation>();
+                if(dataSnapshot.exists()){
+                    String u1 = dataSnapshot.child("user1").getValue(String.class);
+                    String u2 = dataSnapshot.child("user2").getValue(String.class);
+
+                    Log.v("u1:", u1);
+                    Log.v("u2:", u2);
+                    Log.v("COWs!!", dataSnapshot.getKey());
+
+                    Conversation c = new Conversation(u1,u2);
+
+                    if(c.isMember(currentUserEmail)){
+                        chatList.add(c);
+                    }
+
+                }
 
 
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
     }
+
+
 
 
 
@@ -322,3 +384,5 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 }
+
+

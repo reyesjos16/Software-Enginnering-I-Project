@@ -4,14 +4,18 @@ import java.util.*;
 
 public class Conversation {
 
-    private String user1;
-    private String user2;
-    private String primaryKey;
+    public String user1;
+    public String user2;
+    public String primaryKey;
 
     List<FriendlyMessage> messageList = new LinkedList<>();
 
-    public Conversation()
-    {}
+    public Conversation() {
+        this.user1 = "";
+        this.user2 = "";
+        this.primaryKey = "";
+        this.messageList = null;
+    }
 
     public Conversation(String user1, String user2){
         this.user1 = user1;
