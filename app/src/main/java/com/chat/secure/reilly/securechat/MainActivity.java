@@ -53,7 +53,10 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import io.fabric.sdk.android.Fabric;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.List;
+
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -165,6 +168,20 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(new Intent(MainActivity.this, NewConversationActivity.class));
             }
         });
+
+        //recycler view
+        RecyclerView  rvConversations = (RecyclerView)findViewById(R.id.conversationRecyclerView);
+
+        //test convo list
+        List<Conversation> convoList = new LinkedList<Conversation>();
+
+        convoList.add(new Conversation(mFirebaseUser.getEmail(), "User2@gmail.com"));
+        convoList.add(new Conversation("Cat@gmail.com", mFirebaseUser.getEmail()));
+
+        ConversationAdapter adapter = new ConversationAdapter(convoList);
+
+        rvConversations.setAdapter(adapter);
+        rvConversations.setLayoutManager(new LinearLayoutManager(this));
 
 
 
