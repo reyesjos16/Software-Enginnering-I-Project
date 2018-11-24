@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 }
-    public void getConversation(String email) {
+    public void getConversation(final String email) {
        final List<Conversation> chatList = new ArrayList<Conversation>();
         /*
         final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats");
@@ -327,7 +327,12 @@ public class MainActivity extends AppCompatActivity implements
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for (DataSnapshot chatChildSnapshot : dataSnapshot.getChildren()) {
                     Conversation chat = chatChildSnapshot.getValue(Conversation.class);
-                    chatList.add(chat);
+                    if(chat.isMember(email)){
+
+                    }
+                    else{
+                        chatList.add(chat);
+                    }
                 }
             }
 
