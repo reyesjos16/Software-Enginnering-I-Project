@@ -325,8 +325,10 @@ public class MainActivity extends AppCompatActivity implements
         chatRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Conversation chat = dataSnapshot.getValue(Conversation.class);
-                chatList.add(chat);
+                for (DataSnapshot chatChildSnapshot : dataSnapshot.getChildren()) {
+                    Conversation chat = chatChildSnapshot.getValue(Conversation.class);
+                    chatList.add(chat);
+                }
             }
 
             @Override
