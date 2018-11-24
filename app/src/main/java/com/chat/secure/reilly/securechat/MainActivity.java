@@ -47,6 +47,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -300,7 +301,9 @@ public class MainActivity extends AppCompatActivity implements
 }
     public void getConversation(String email) {
        final List<Conversation> chatList = new ArrayList<Conversation>();
+        /*
         final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats");
+
         chatRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -317,6 +320,34 @@ public class MainActivity extends AppCompatActivity implements
 
             }
         });
+*/
+        final DatabaseReference chatRef= FirebaseDatabase.getInstance().getReference("chats");
+        chatRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Conversation chat = dataSnapshot.getValue(Conversation.class);
+                chatList.add(chat);
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
     }
 
