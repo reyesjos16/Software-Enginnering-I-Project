@@ -173,10 +173,45 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(new Intent(MainActivity.this, NewConversationActivity.class));
             }
         });
+        final List<Conversation> chatList = new ArrayList<Conversation>();
+        final DatabaseReference chatRef= FirebaseDatabase.getInstance().getReference("chats");
+        chatRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                for (DataSnapshot chatChildSnapshot : dataSnapshot.getChildren()) {
+                    Conversation chat = chatChildSnapshot.getValue(Conversation.class);
+                    if(chat.isMember(mFirebaseUser.getEmail())){
+                        chatList.add(chat);
+                    }
+                    else{
 
+                    }
+                }
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage());
+            }
+        });
     }
+
+}
 
 
 
@@ -299,62 +334,5 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 }
-    public void getConversation(final String email) {
-       final List<Conversation> chatList = new ArrayList<Conversation>();
-        /*
-        final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats");
 
-        chatRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                chatList.clear();
-                for(DataSnapshot chatChildSnapshot: dataSnapshot.getChildren()){
-                    Conversation chat = chatChildSnapshot.getValue(Conversation.class);
-                    chatList.add(chat);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError){
-                System.out.println("The read failed: " + firebaseError.getMessage());
-
-            }
-        });
-*/
-        final DatabaseReference chatRef= FirebaseDatabase.getInstance().getReference("chats");
-        chatRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for (DataSnapshot chatChildSnapshot : dataSnapshot.getChildren()) {
-                    Conversation chat = chatChildSnapshot.getValue(Conversation.class);
-                    if(chat.isMember(email)){
-
-                    }
-                    else{
-                        chatList.add(chat);
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage());
-            }
-        });
-    }
 
