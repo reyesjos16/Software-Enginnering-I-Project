@@ -72,6 +72,10 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     }
 
+    public void updateList(List<Conversation> newConvoList){
+        this.convos = newConvoList;
+        notifyDataSetChanged();
+    }
 
 
     @NonNull

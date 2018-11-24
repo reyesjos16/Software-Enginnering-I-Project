@@ -184,11 +184,19 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
+
+
+
         ConversationAdapter adapter = new ConversationAdapter(convoList);
 
         rvConversations.setAdapter(adapter);
         rvConversations.setLayoutManager(new LinearLayoutManager(this));
 
+        List<Conversation> c2 = new LinkedList<Conversation>();
+        c2.add(new Conversation(mFirebaseUser.getEmail(), "cat@gmail.com"));
+
+
+        adapter.updateList(c2);
 
 
     }
