@@ -150,16 +150,6 @@ public class MainActivity extends AppCompatActivity implements
         // Fetch remote config.
         fetchConfig();
 
-        //test code to switch views
-        Button openOther = (Button)findViewById(R.id.openMessageActivity);
-
-        openOther.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, MessageActivity.class));
-            }
-        });
-
         Button openNewConversationActivity = (Button)findViewById(R.id.newConversationButton);
 
         openNewConversationActivity.setOnClickListener(new View.OnClickListener() {
@@ -175,8 +165,24 @@ public class MainActivity extends AppCompatActivity implements
         //test convo list
         List<Conversation> convoList = new LinkedList<Conversation>();
 
-        convoList.add(new Conversation(mFirebaseUser.getEmail(), "User2@gmail.com"));
-        convoList.add(new Conversation("Cat@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation(mFirebaseUser.getEmail(), "cat@gmail.com"));
+        convoList.add(new Conversation("Cat2@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat3@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat4@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat5@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat6@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat7@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
+
+
 
         ConversationAdapter adapter = new ConversationAdapter(convoList);
 

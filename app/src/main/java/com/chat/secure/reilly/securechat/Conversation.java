@@ -86,9 +86,9 @@ public class Conversation {
         String otherUser;
 
         if(!currentUser.equals(this.user1)){
-            return this.user2;
-        }else{
             return this.user1;
+        }else{
+            return this.user2;
         }
     }
 }
