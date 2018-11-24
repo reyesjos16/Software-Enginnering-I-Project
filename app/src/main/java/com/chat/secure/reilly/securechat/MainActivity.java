@@ -69,8 +69,6 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.chat.secure.reilly.securechat.DatabaseOperations.testChatAdd;
-
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -104,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements
     //private AdView mAdView;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
+
+    DatabaseReference chatRef;
+    ChildEventListener convoListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,68 +174,36 @@ public class MainActivity extends AppCompatActivity implements
         RecyclerView  rvConversations = (RecyclerView)findViewById(R.id.conversationRecyclerView);
 
         //test convo list
-        List<Conversation> convoList = new LinkedList<Conversation>();
+        final List<Conversation> convoList = new LinkedList<Conversation>();
 
-        convoList.add(new Conversation(mFirebaseUser.getEmail(), "cat@gmail.com"));
-        convoList.add(new Conversation("Cat2@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat3@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat4@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat5@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat6@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat7@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-        convoList.add(new Conversation("Cat8@gmail.com", mFirebaseUser.getEmail()));
-
-
-
-
-
-
-        ConversationAdapter adapter = new ConversationAdapter(convoList);
+        final ConversationAdapter adapter = new ConversationAdapter(convoList);
 
         rvConversations.setAdapter(adapter);
         rvConversations.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Conversation> c2 = new LinkedList<Conversation>();
-        c2.add(new Conversation(mFirebaseUser.getEmail(), "cat@gmail.com"));
 
 
-        adapter.updateList(c2);
         final List<Conversation> chatList = new ArrayList<Conversation>();
 
         final String currentUserEmail = mFirebaseUser.getEmail();
 
-        final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference().child("chats");
-        chatRef.addChildEventListener(new ChildEventListener() {
+        chatRef = FirebaseDatabase.getInstance().getReference().child("chats");
+        convoListener = chatRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-
-                //GenericTypeIndicator<Conversation> t = new GenericTypeIndicator<Conversation>();
-
-                //List<Conversation> chatsL = new ArrayList<Conversation>();
                 if(dataSnapshot.exists()){
                     String u1 = dataSnapshot.child("user1").getValue(String.class);
                     String u2 = dataSnapshot.child("user2").getValue(String.class);
 
-                    Log.v("u1:", u1);
-                    Log.v("u2:", u2);
-                    Log.v("COWs!!", dataSnapshot.getKey());
-
                     Conversation c = new Conversation(u1,u2);
 
                     if(c.isMember(currentUserEmail)){
-                        chatList.add(c);
+                        convoList.add(c);
                     }
 
                 }
+
+                adapter.updateList(convoList);
 
 
             }
@@ -251,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-
             }
 
             @Override
@@ -268,28 +237,19 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onPause() {
-        //if (mAdView != null) {
-        //    mAdView.pause();
-        //}
-        //mFirebaseAdapter.stopListening();
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //if (mAdView != null) {
-        //    mAdView.resume();
-        //}
         //mFirebaseAdapter.startListening();
     }
 
     @Override
     public void onDestroy() {
-        //if (mAdView != null) {
-        //    mAdView.destroy();
-        //}
         super.onDestroy();
+        chatRef.removeEventListener(convoListener);
     }
 
     @Override

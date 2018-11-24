@@ -2,12 +2,9 @@ package com.chat.secure.reilly.securechat;
 
 import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DatabaseError;
+
 
 import java.util.*;
 
@@ -39,44 +36,6 @@ public class DatabaseOperations
         conv.child("messageList").push().setValue(message);
 
     }
-
-
-
-    /*public static boolean chatExists(String user1, String user2)
-    {
-        DatabaseReference c = FirebaseDatabase.getInstance().getReference().child(CHATS_CHILD);
-
-        final String key  = Conversation.computeConversationPrimaryKey(user1, user2);
-        Log.v("key!!!!", key);
-
-        c.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-               dataSnapshot.hasChild(key);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
-        if(!chats.child(key).getKey().equals(""))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }*/
 
     public static void testChatAdd()
     {

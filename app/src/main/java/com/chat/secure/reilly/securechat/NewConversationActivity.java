@@ -123,7 +123,6 @@ public class NewConversationActivity extends AppCompatActivity {
 
                 //need check if use exists then create conversation
 
-                //then open message activity with a reference to the message list for the new conversation
             }
 
 
