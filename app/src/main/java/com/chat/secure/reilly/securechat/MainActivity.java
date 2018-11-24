@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 //import com.google.android.gms.ads.AdRequest;
@@ -52,6 +53,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -173,20 +175,37 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(new Intent(MainActivity.this, NewConversationActivity.class));
             }
         });
+
         final List<Conversation> chatList = new ArrayList<Conversation>();
-        final DatabaseReference chatRef= FirebaseDatabase.getInstance().getReference("chats");
+
+        final String currentUserEmail = mFirebaseUser.getEmail();
+
+        final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference().child("chats");
         chatRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for (DataSnapshot chatChildSnapshot : dataSnapshot.getChildren()) {
-                    Conversation chat = chatChildSnapshot.getValue(Conversation.class);
-                    if(chat.isMember(mFirebaseUser.getEmail())){
-                        chatList.add(chat);
-                    }
-                    else{
+                //Iterable<DataSnapshot> children = dataSnapshot.getChildren();
 
+                //GenericTypeIndicator<Conversation> t = new GenericTypeIndicator<Conversation>();
+
+                //List<Conversation> chatsL = new ArrayList<Conversation>();
+                if(dataSnapshot.exists()){
+                    String u1 = dataSnapshot.child("user1").getValue(String.class);
+                    String u2 = dataSnapshot.child("user2").getValue(String.class);
+
+                    Log.v("u1:", u1);
+                    Log.v("u2:", u2);
+                    Log.v("COWs!!", dataSnapshot.getKey());
+
+                    Conversation c = new Conversation(u1,u2);
+
+                    if(c.isMember(currentUserEmail)){
+                        chatList.add(c);
                     }
+
                 }
+
+
             }
 
             @Override
@@ -211,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-}
+
 
 
 
