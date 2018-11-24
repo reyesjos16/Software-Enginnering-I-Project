@@ -47,12 +47,19 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import io.fabric.sdk.android.Fabric;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -291,3 +298,25 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 }
+    public void getConversation(String email) {
+       final List<Conversation> chatList = new ArrayList<Conversation>();
+        final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("chats");
+        chatRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                chatList.clear();
+                for(DataSnapshot chatChildSnapshot: dataSnapshot.getChildren()){
+                    Conversation chat = chatChildSnapshot.getValue(Conversation.class);
+                    chatList.add(chat);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError){
+                System.out.println("The read failed: " + firebaseError.getMessage());
+
+            }
+        });
+
+    }
+
