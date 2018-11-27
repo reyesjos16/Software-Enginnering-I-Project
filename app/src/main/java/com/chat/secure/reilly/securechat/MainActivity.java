@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-        chatRef.removeEventListener(convoListener);
+        //chatRef.removeEventListener(convoListener);
     }
 
     @Override
