@@ -187,6 +187,9 @@ public class MainActivity extends AppCompatActivity implements
 
         final String currentUserEmail = mFirebaseUser.getEmail();
 
+        //TODO have single value event listner run once to initalize chatList
+
+
         chatRef = FirebaseDatabase.getInstance().getReference().child("chats");
         convoListener = chatRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -266,8 +269,9 @@ public class MainActivity extends AppCompatActivity implements
                 sendInvitation();
                 return true;
             case R.id.crash_menu:
-                Log.w("Crashlytics", "Crash button clicked");
-                causeCrash();
+                //Log.w("Crashlytics", "Crash button clicked");
+                //causeCrash();
+                Encryption.test("cow");
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
