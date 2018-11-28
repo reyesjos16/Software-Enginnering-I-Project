@@ -20,9 +20,6 @@ public class DatabaseOperations
     //Returns a reference to the new chat
     public static DatabaseReference pushChat(Conversation conv)
     {
-        //This line is not needed or used
-        //https://stackoverflow.com/questions/43029700/does-initializing-firebasedatabase-getinstance-multiple-times-affect-performan
-        DatabaseReference c = FirebaseDatabase.getInstance().getReference().child(CHATS_CHILD);
         DatabaseReference newchat = chats.child(conv.getPrimaryKey());
         newchat.setValue(conv);
 
