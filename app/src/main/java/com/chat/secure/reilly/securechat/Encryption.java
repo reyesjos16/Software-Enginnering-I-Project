@@ -78,6 +78,7 @@ public class Encryption {
     public static void test(String pw){
         try{
             Encryption e = new Encryption(pw);
+            Encryption e2 = new Encryption(pw);
 
             String m = "i am a cool cow";
             Log.v("E:- ", m);
@@ -85,6 +86,9 @@ public class Encryption {
             Log.v("E: ", cypherText);
             String clear = e.decrypt(cypherText);
             Log.v("E:!", clear);
+
+            String clear2 = e2.decrypt(cypherText);
+            Log.v("E2:!", clear2);
 
 
             m = "sup famedy\nfam i am a cool cow i am a cool cow i am a cool cow !!!!!!!!!!!!!!!!!!!!!!!!!!!";

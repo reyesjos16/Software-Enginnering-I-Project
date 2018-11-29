@@ -7,6 +7,7 @@ public class Conversation {
     public String user1;
     public String user2;
     public String primaryKey;
+    private boolean isEncrypted; //true if convo is encrypted
 
     List<FriendlyMessage> messageList = new LinkedList<>();
 
@@ -15,12 +16,23 @@ public class Conversation {
         this.user2 = "";
         this.primaryKey = "";
         this.messageList = null;
+        this.isEncrypted = false;
     }
 
     public Conversation(String user1, String user2){
         this.user1 = user1;
         this.user2 = user2;
         this.setPrimaryKey(user1, user2);
+        this.messageList = null;
+        this.isEncrypted = false;
+    }
+
+    public Conversation(String user1, String user2, boolean convoIsEncrypted){
+        this.user1 = user1;
+        this.user2 = user2;
+        this.setPrimaryKey(user1, user2);
+        this.messageList = null;
+        this.isEncrypted = convoIsEncrypted;
     }
 
     public List<FriendlyMessage> getMessageList(){
@@ -55,6 +67,11 @@ public class Conversation {
         this.primaryKey = computeConversationPrimaryKey(user1, user2);
     }
 
+    public void setIsEncrypted(boolean isE){
+        this.isEncrypted = isE;
+    }
+
+
     public String getUser1() {
         return user1;
     }
@@ -68,6 +85,11 @@ public class Conversation {
         return primaryKey;
     }
 
+    public boolean getIsEncrypted(){ return isEncrypted; }
+
+    public boolean isEncrypted() {
+        return this.isEncrypted;
+    }
 
     public static String computeConversationPrimaryKey(String user1, String user2){
         String u1 = user1.replaceAll("@gmail.com$","");
@@ -87,8 +109,6 @@ public class Conversation {
     //returns user not equal to currentUser
     //assumes currentUser is a member of the conversation
     public String getOtherUser(String currentUser){
-        String otherUser;
-
         if(!currentUser.equals(this.user1)){
             return this.user1;
         }else{
