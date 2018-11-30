@@ -271,7 +271,17 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.crash_menu:
                 //Log.w("Crashlytics", "Crash button clicked");
                 //causeCrash();
-                Encryption.test("cow");
+                //Encryption.test("cow");
+                LocalKey.writeKey("testuser1-testuser2", "keypassword", getBaseContext());
+                Log.v("LOCALKEY PRINTING KEY", LocalKey.readKey("testuser1-testuser2",  getBaseContext()));
+                if(LocalKey.removeKey("testuser1-testuser2", getBaseContext()))
+                {
+                    Log.v("LOCALKEY", "REMOVAL SUCCESS");
+                }
+                else
+                {
+                    Log.v("LOCALKEY", "REMOVAL FAILURE");
+                }
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();

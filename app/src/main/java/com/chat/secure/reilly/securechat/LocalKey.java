@@ -55,7 +55,8 @@ public class LocalKey
     }
     */
 
-    private void writeToFile(String filename, String data,Context context)
+
+    public static void writeKey(String filename, String data,Context context)
     {
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("key-" + filename, Context.MODE_PRIVATE));
@@ -67,7 +68,8 @@ public class LocalKey
         }
     }
 
-    private String readFromFile(String filename, Context context)
+
+    public static String readKey(String filename, Context context)
     {
 
         String ret = "";
@@ -96,6 +98,22 @@ public class LocalKey
         return ret;
     }
 
-    private String[] getKeyList(Context ctx)
+    //True if key successfully removed, false otherwise
+    public static boolean removeKey(String filename, Context ctx)
+    {
+        return ctx.deleteFile("key-" + filename);
+    }
+
+    private static String[] getKeyList(Context ctx)
     { return ctx.fileList(); }
+    /*
+    public static void printKeys(Context ctx)
+    {
+        String[] filenames = getKeyList(ctx);
+        for(int i = 0; i < filenames.length; i++)
+        {
+            Log.v("File [" + i + "] = ", filenames[i]);
+        }
+    }
+    */
 }
