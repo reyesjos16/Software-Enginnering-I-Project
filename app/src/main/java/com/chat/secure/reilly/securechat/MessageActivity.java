@@ -39,6 +39,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -183,6 +184,7 @@ public class MessageActivity extends AppCompatActivity implements
                 Log.v("is E:", "is E");
                 encrypter = new Encryption(password);
             }catch (Exception e){
+                e.printStackTrace();
 
             }
         }else{
@@ -220,6 +222,18 @@ public class MessageActivity extends AppCompatActivity implements
                 if(fEncrypter == null){
                     return friendlyMessage;
                 }else{
+                    try{
+                        return fEncrypter.decryptMessage(friendlyMessage);
+                    }catch (Exception e){
+                        e.printStackTrace();
+
+                        Intent i = new Intent(MessageActivity.this, MainActivity.class);
+                        Toast.makeText(getApplicationContext(), "Incorrect password for this conversation D",
+                                Toast.LENGTH_LONG).show();
+
+                        startActivity(i);
+                        finish();
+                    }
                     return fEncrypter.decryptMessage(friendlyMessage);
                 }
 
@@ -385,9 +399,22 @@ public class MessageActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername,
                         mPhotoUrl, null);
+
                 //encrypt messages
                 if(fEncrypter != null){
-                    friendlyMessage = fEncrypter.encryptMessage(friendlyMessage);
+                    try{
+                        friendlyMessage = fEncrypter.encryptMessage(friendlyMessage);
+                    }catch(Exception e){
+                        e.printStackTrace();
+
+                        Intent i = new Intent(MessageActivity.this, MainActivity.class);
+                        Toast.makeText(getApplicationContext(), "Incorrect password for this conversation",
+                                Toast.LENGTH_LONG).show();
+
+                        startActivity(i);
+                        finish();
+
+                    }
                 }
 
                 DatabaseOperations.addMessageToConv(friendlyMessage, mFirebaseDatabaseReference);

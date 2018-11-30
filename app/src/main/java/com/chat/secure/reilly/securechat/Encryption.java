@@ -78,7 +78,7 @@ public class Encryption {
     public static void test(String pw){
         try{
             Encryption e = new Encryption(pw);
-            Encryption e2 = new Encryption(pw);
+            Encryption e2 = new Encryption(pw + "hey");
 
             String m = "i am a cool cow";
             Log.v("E:- ", m);
