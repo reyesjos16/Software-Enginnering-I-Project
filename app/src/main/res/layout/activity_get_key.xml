@@ -5,22 +5,16 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/usernameForNewConversation"
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter Email"
-        android:inputType="textEmailAddress" />
-
-    <Switch
-        android:id="@+id/encryptionSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:text=" Encrypt Conversation" />
+        android:hint="Enter Conversation Password"
+        android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/createConversationButton"
+        android:id="@+id/openEConversation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Conversation" />
+        android:text="Open Conversation" />
 </LinearLayout>
