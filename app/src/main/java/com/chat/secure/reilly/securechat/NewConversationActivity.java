@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ public class NewConversationActivity extends AppCompatActivity {
         //the user clicked create new conversation
         Button createConversationButton = (Button)findViewById(R.id.createConversationButton);
         final EditText getOtherUserEmail = (EditText)findViewById(R.id.usernameForNewConversation);
+
+        final Switch eSwitch = (Switch) findViewById(R.id.encryptionSwitch);
 
         createConversationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +73,7 @@ public class NewConversationActivity extends AppCompatActivity {
                                 if (!dataSnapshot.exists()) {
 
                                     //create conversation object
-                                    Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail);
+                                    Conversation newConversation = new Conversation(deviceUserEmail, otherUserEmail, eSwitch.isChecked());
                                     DatabaseReference newConversationDBRefernce = DatabaseOperations.pushChat(newConversation);
 
                                     String newConvoPath = newConversationDBRefernce.toString();
@@ -79,23 +82,42 @@ public class NewConversationActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Creating Conversation",
                                             Toast.LENGTH_LONG).show();
 
-                                    Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
-                                    //passes path to db ref as a string
-                                    i.putExtra("conversation", newConvoPath);
+                                    if(eSwitch.isChecked()){
+                                        //newConversation.setIsEncrypted(true);
 
-                                    startActivity(i);
+
+                                        Intent i = new Intent(NewConversationActivity.this, GetKeyActivity.class);
+                                        //passes path to db ref as a string
+                                        i.putExtra("conversation", newConvoPath);
+
+                                        startActivity(i);
+
+                                    }else{
+                                        Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
+                                        //passes path to db ref as a string
+                                        i.putExtra("conversation", newConvoPath);
+
+                                        startActivity(i);
+                                    }
+
+
                                 } else {
 
                                     String existingConvo =  potentialConvo.toString();
+                                    if(eSwitch.isChecked()){
+                                        Toast.makeText(getApplicationContext(), "Cannot Encrypt Existing Conversation",
+                                                Toast.LENGTH_LONG).show();
+                                    }else{
 
-                                    Toast.makeText(getApplicationContext(), "Conversation Already Exists",
-                                            Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), "Conversation Already Exists",
+                                                Toast.LENGTH_LONG).show();
 
-                                    Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
-                                    //passes path to db ref as a string
-                                    i.putExtra("conversation", existingConvo);
+                                        Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
+                                        //passes path to db ref as a string
+                                        i.putExtra("conversation", existingConvo);
 
-                                    startActivity(i);
+                                        startActivity(i);
+                                    }
 
                                 }
 

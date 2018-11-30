@@ -85,7 +85,7 @@ public class Conversation {
         return primaryKey;
     }
 
-    public boolean getIsEncrypted(){ return isEncrypted; }
+    public boolean getIsEncrypted(){ return this.isEncrypted; }
 
     public boolean isEncrypted() {
         return this.isEncrypted;
