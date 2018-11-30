@@ -91,6 +91,8 @@ public class NewConversationActivity extends AppCompatActivity {
                                         i.putExtra("conversation", newConvoPath);
 
                                         startActivity(i);
+                                        finish();
+
 
                                     }else{
                                         Intent i = new Intent(NewConversationActivity.this, MessageActivity.class);
@@ -98,6 +100,8 @@ public class NewConversationActivity extends AppCompatActivity {
                                         i.putExtra("conversation", newConvoPath);
 
                                         startActivity(i);
+                                        finish();
+
                                     }
 
 
@@ -117,6 +121,8 @@ public class NewConversationActivity extends AppCompatActivity {
                                         i.putExtra("conversation", existingConvo);
 
                                         startActivity(i);
+                                        finish();
+
                                     }
 
                                 }

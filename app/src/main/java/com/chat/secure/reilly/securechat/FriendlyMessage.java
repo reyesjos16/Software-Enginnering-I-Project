@@ -18,6 +18,14 @@ public class FriendlyMessage {
         this.imageUrl = imageUrl;
     }
 
+    public FriendlyMessage(String text, String name, String photoUrl, String imageUrl, String id) {
+        this.text = text;
+        this.name = name;
+        this.photoUrl = photoUrl;
+        this.imageUrl = imageUrl;
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

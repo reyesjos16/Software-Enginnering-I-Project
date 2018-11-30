@@ -55,12 +55,24 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                 Conversation c = convos.get(pos);
                 //Log.v("pos is:", c.getOtherUser(user.getEmail()));
                 DatabaseReference dbConvo = FirebaseDatabase.getInstance().getReference().child("chats").child(c.getPrimaryKey());
-                Intent i = new Intent(context, MessageActivity.class);
-                //passes path to db ref as a string
-                i.putExtra("conversation", dbConvo.toString());
 
-                context.startActivity(i);
-            }
+                if(c.isEncrypted()){
+                    Intent i = new Intent(context, GetKeyActivity.class);
+                    //passes path to db ref as a string
+                    i.putExtra("conversation", dbConvo.toString());
+
+                    context.startActivity(i);
+
+                }else{
+                    Intent i = new Intent(context, MessageActivity.class);
+                    //passes path to db ref as a string
+                    i.putExtra("conversation", dbConvo.toString());
+
+                    context.startActivity(i);
+
+                }
+
+                           }
         }
     }
 

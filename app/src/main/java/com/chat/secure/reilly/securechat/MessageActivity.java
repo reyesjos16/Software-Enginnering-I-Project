@@ -166,10 +166,32 @@ public class MessageActivity extends AppCompatActivity implements
         //convert string path to db ref to databaseRef
         Bundle extras = getIntent().getExtras();
 
-        //maybe need test
-        //if (extras != null) {
+        final String password;
+        Encryption encrypter = null;
+        final Encryption fEncrypter;
+        if (extras.containsKey("password")) {
+            password = extras.getString("password");
+
+        }else{
+            password = "";
+        }
+
+        Log.wtf("pw:", password);
+
+        if(!password.equals("")){
+            try{
+                Log.v("is E:", "is E");
+                encrypter = new Encryption(password);
+            }catch (Exception e){
+
+            }
+        }else{
+            encrypter = null;
+        }
+
+        fEncrypter = encrypter;
+
         String pathToConvo = extras.getString("conversation");
-        //}
 
         //DatabaseReference convo = mFirebaseDatabaseReference.child(pathToConvo);
         DatabaseReference convo = FirebaseDatabase.getInstance().getReferenceFromUrl(pathToConvo);
@@ -193,7 +215,14 @@ public class MessageActivity extends AppCompatActivity implements
                 if (friendlyMessage != null) {
                     friendlyMessage.setId(dataSnapshot.getKey());
                 }
-                return friendlyMessage;
+
+                //decryption handle here if convo is incrypted
+                if(fEncrypter == null){
+                    return friendlyMessage;
+                }else{
+                    return fEncrypter.decryptMessage(friendlyMessage);
+                }
+
             }
         };
 
@@ -356,6 +385,10 @@ public class MessageActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername,
                         mPhotoUrl, null);
+                //encrypt messages
+                if(fEncrypter != null){
+                    friendlyMessage = fEncrypter.encryptMessage(friendlyMessage);
+                }
 
                 DatabaseOperations.addMessageToConv(friendlyMessage, mFirebaseDatabaseReference);
 

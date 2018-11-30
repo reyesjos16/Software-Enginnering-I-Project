@@ -60,15 +60,15 @@ public class Encryption {
 
     public FriendlyMessage encryptMessage(FriendlyMessage m){
         try {
-            return new FriendlyMessage(encrypt(m.getText()), m.getName(), m.getPhotoUrl(), m.getImageUrl());
+            return new FriendlyMessage(encrypt(m.getText()), m.getName(), m.getPhotoUrl(), m.getImageUrl(), m.getId());
         }catch (Exception e){
             return null;
         }
     }
 
-    public FriendlyMessage decrypttMessage(FriendlyMessage m){
+    public FriendlyMessage decryptMessage(FriendlyMessage m){
         try {
-            return new FriendlyMessage(decrypt(m.getText()), m.getName(), m.getPhotoUrl(), m.getImageUrl());
+            return new FriendlyMessage(decrypt(m.getText()), m.getName(), m.getPhotoUrl(), m.getImageUrl(), m.getId());
         }catch (Exception e){
             return null;
         }
