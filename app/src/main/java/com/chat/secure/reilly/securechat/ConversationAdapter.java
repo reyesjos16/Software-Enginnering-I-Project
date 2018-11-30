@@ -53,7 +53,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
             if(pos != RecyclerView.NO_POSITION){
                 Conversation c = convos.get(pos);
-                Log.v("pos is:", c.getOtherUser(user.getEmail()));
+                //Log.v("pos is:", c.getOtherUser(user.getEmail()));
                 DatabaseReference dbConvo = FirebaseDatabase.getInstance().getReference().child("chats").child(c.getPrimaryKey());
                 Intent i = new Intent(context, MessageActivity.class);
                 //passes path to db ref as a string

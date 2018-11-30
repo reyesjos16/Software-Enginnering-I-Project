@@ -197,8 +197,8 @@ public class MainActivity extends AppCompatActivity implements
                 if(dataSnapshot.exists()){
                     String u1 = dataSnapshot.child("user1").getValue(String.class);
                     String u2 = dataSnapshot.child("user2").getValue(String.class);
-
-                    Conversation c = new Conversation(u1,u2);
+                    boolean isE = dataSnapshot.child("isEncrypted").getValue(Boolean.class);
+                    Conversation c = new Conversation(u1,u2, isE);
 
                     if(c.isMember(currentUserEmail)){
                         convoList.add(c);

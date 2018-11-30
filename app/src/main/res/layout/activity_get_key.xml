@@ -12,6 +12,12 @@
         android:hint="Enter Conversation Password"
         android:inputType="textPassword" />
 
+    <Switch
+        android:id="@+id/saveKeySwitch"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Save Password (Less Secure)" />
+
     <Button
         android:id="@+id/openEConversation"
         android:layout_width="match_parent"
