@@ -55,8 +55,10 @@ public class LocalKey
     }
     */
 
-
-    public static void writeKey(String filename, String data,Context context)
+    //Example input:
+    // writeKey("cat-dog", "password", getBaseContext())
+    //Example creates a a file with the key password inside file cat-dog
+    public static void writeKey(String filename, String data, Context context)
     {
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("key-" + filename, Context.MODE_PRIVATE));
@@ -68,7 +70,7 @@ public class LocalKey
         }
     }
 
-
+    //Will return an empty string if file is not found
     public static String readKey(String filename, Context context)
     {
 
