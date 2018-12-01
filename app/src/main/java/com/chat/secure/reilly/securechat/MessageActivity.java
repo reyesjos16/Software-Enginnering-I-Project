@@ -128,6 +128,8 @@ public class MessageActivity extends AppCompatActivity implements
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
 
+    DatabaseReference convo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,8 +197,7 @@ public class MessageActivity extends AppCompatActivity implements
 
         String pathToConvo = extras.getString("conversation");
 
-        //DatabaseReference convo = mFirebaseDatabaseReference.child(pathToConvo);
-        DatabaseReference convo = FirebaseDatabase.getInstance().getReferenceFromUrl(pathToConvo);
+        convo = FirebaseDatabase.getInstance().getReferenceFromUrl(pathToConvo);
         final String convoPrimaryKey = convo.getKey();
 
         DatabaseReference messagesRef = convo.child("messageList");
@@ -511,6 +512,18 @@ public class MessageActivity extends AppCompatActivity implements
                 return true;
             case R.id.fresh_config_menu:
                 fetchConfig();
+                return true;
+
+            case R.id.leave_conversation:
+                Toast.makeText(getApplicationContext(), "Leaving conversation",
+                        Toast.LENGTH_LONG).show();
+                String currUser = mFirebaseUser.getEmail();
+                DatabaseOperations.leaveConversation(convo, currUser);
+                Intent backToMain = new Intent(MessageActivity.this, MainActivity.class);
+                backToMain.putExtra("convoLeft", convo.getKey());
+
+                startActivity(backToMain);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

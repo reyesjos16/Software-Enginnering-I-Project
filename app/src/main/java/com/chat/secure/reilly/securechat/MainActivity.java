@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements
     ChildEventListener convoListener;
 
 
+    final List<ConversationLite> convoList = new LinkedList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,16 +173,41 @@ public class MainActivity extends AppCompatActivity implements
         RecyclerView  rvConversations = (RecyclerView)findViewById(R.id.conversationRecyclerView);
 
         //test convo list
-        final List<Conversation> convoList = new LinkedList<Conversation>();
 
         final ConversationAdapter adapter = new ConversationAdapter(convoList);
 
+        Bundle extras = getIntent().getExtras();
+
+        String convoLeftPK;
+
+        //remove appropriate item form list
+
+        Intent currIntent = getIntent();
+        if (currIntent.hasExtra("convoLeft")) {
+            convoLeftPK = extras.getString("convoLeft");
+            Toast.makeText(getApplicationContext(), convoLeftPK,
+                    Toast.LENGTH_LONG).show();
+
+            for(int i = 0; i < convoList.size(); i++){
+                ConversationLite currC = convoList.get(i);
+                Log.wtf("pk: ", currC.getPrimaryKey());
+
+                if(currC.getPrimaryKey().equals(convoLeftPK)){
+                    Toast.makeText(getApplicationContext(), "Found",
+                            Toast.LENGTH_LONG).show();
+                    Log.wtf("DELETED", "");
+                    ((LinkedList<ConversationLite>) convoList).remove(i);
+                    i--;
+                    adapter.updateList(convoList);
+
+                    //break;
+                }
+            }
+        }
+
+
         rvConversations.setAdapter(adapter);
         rvConversations.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-        final List<Conversation> chatList = new ArrayList<Conversation>();
 
         final String currentUserEmail = mFirebaseUser.getEmail();
 
@@ -192,13 +219,11 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.exists()){
-                    String u1 = dataSnapshot.child("user1").getValue(String.class);
-                    String u2 = dataSnapshot.child("user2").getValue(String.class);
-                    boolean isE = dataSnapshot.child("isEncrypted").getValue(Boolean.class);
-                    Conversation c = new Conversation(u1,u2, isE);
+                    ConversationLite cL = dataSnapshot.getValue(ConversationLite.class);
 
-                    if(c.isMember(currentUserEmail)){
-                        convoList.add(c);
+
+                    if(cL.isMember(currentUserEmail)){
+                        convoList.add(cL);
                     }
 
                 }
@@ -243,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
+
         //mFirebaseAdapter.startListening();
     }
 

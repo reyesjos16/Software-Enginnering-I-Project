@@ -1,9 +1,11 @@
 package com.chat.secure.reilly.securechat;
 
-import java.util.*;
+import com.google.firebase.database.IgnoreExtraProperties;
 
-public class Conversation {
+//conversation without message list so it con be converted to proper object
 
+@IgnoreExtraProperties
+public class ConversationLite {
     public String user1;
     public String user2;
     public String primaryKey;
@@ -11,45 +13,32 @@ public class Conversation {
     public boolean user1HasLeft; //true when a user has elected to leave conversation
     public boolean user2HasLeft;
 
-    List<Message> messageList = new LinkedList<>();
-
-    public Conversation() {
+    public ConversationLite() {
         this.user1 = "";
         this.user2 = "";
         this.primaryKey = "";
-        this.messageList = null;
         this.isEncrypted = false;
         this.user1HasLeft = false;
         this.user2HasLeft = false;
 
     }
 
-    public Conversation(String user1, String user2){
+    public ConversationLite(String user1, String user2){
         this.user1 = user1;
         this.user2 = user2;
         this.setPrimaryKey(user1, user2);
-        this.messageList = null;
         this.isEncrypted = false;
         this.user1HasLeft = false;
         this.user2HasLeft = false;
     }
 
-    public Conversation(String user1, String user2, boolean convoIsEncrypted){
+    public ConversationLite(String user1, String user2, boolean convoIsEncrypted){
         this.user1 = user1;
         this.user2 = user2;
         this.setPrimaryKey(user1, user2);
-        this.messageList = null;
         this.isEncrypted = convoIsEncrypted;
         this.user1HasLeft = false;
         this.user2HasLeft = false;
-    }
-
-    public List<Message> getMessageList(){
-        return this.messageList;
-    }
-
-    public void addMessage(Message message){
-        messageList.add(message);
     }
 
     public boolean isMember(String username) {
@@ -150,10 +139,6 @@ public class Conversation {
             return user2HasLeft;
         }
     }
-
-    //public void leaveConversation(String username){
-
-    //}
 
     //returns true if all members have left the conversation
     public boolean isAbandoned(){

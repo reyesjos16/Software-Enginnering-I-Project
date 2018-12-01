@@ -52,7 +52,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             int pos = getLayoutPosition();
 
             if(pos != RecyclerView.NO_POSITION){
-                Conversation c = convos.get(pos);
+                ConversationLite c = convos.get(pos);
                 //Log.v("pos is:", c.getOtherUser(user.getEmail()));
                 DatabaseReference dbConvo = FirebaseDatabase.getInstance().getReference().child("chats").child(c.getPrimaryKey());
 
@@ -76,15 +76,15 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
     }
 
-    private List<Conversation>  convos;
+    private List<ConversationLite>  convos;
 
-    public ConversationAdapter(List<Conversation> c){
+    public ConversationAdapter(List<ConversationLite> c){
         convos = c;
 
 
     }
 
-    public void updateList(List<Conversation> newConvoList){
+    public void updateList(List<ConversationLite> newConvoList){
         this.convos = newConvoList;
         notifyDataSetChanged();
     }
@@ -106,7 +106,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ConversationAdapter.ViewHolder holder, int position) {
-        Conversation c = convos.get(position);
+        ConversationLite c = convos.get(position);
 
         String otherUser = c.getOtherUser(this.currentUser);
 
