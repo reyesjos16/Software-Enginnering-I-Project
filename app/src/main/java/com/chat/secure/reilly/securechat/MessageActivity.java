@@ -184,6 +184,7 @@ public class MessageActivity extends AppCompatActivity implements
                 Log.v("is E:", "is E");
                 encrypter = new Encryption(password);
             }catch (Exception e){
+                Log.wtf("c 187", "!!!CAUGHT A 187\n\n");
                 e.printStackTrace();
 
             }
@@ -197,11 +198,10 @@ public class MessageActivity extends AppCompatActivity implements
 
         //DatabaseReference convo = mFirebaseDatabaseReference.child(pathToConvo);
         DatabaseReference convo = FirebaseDatabase.getInstance().getReferenceFromUrl(pathToConvo);
+        final String convoPrimaryKey = convo.getKey();
 
-        //DatabaseReference messagesRef = mFirebaseDatabaseReference.child(MESSAGES_CHILD);
+
         DatabaseReference messagesRef = convo.child("messageList");
-        DatabaseReference messagesForConvo = convo.child("messageList");
-
 
 
         mFirebaseDatabaseReference = convo;
@@ -218,23 +218,42 @@ public class MessageActivity extends AppCompatActivity implements
                     friendlyMessage.setId(dataSnapshot.getKey());
                 }
 
-                //decryption handle here if convo is incrypted
-                if(fEncrypter == null){
+                //decryption handled here if convo is incrypted
+                if(fEncrypter == null || friendlyMessage == null){
                     return friendlyMessage;
                 }else{
-                    try{
-                        return fEncrypter.decryptMessage(friendlyMessage);
-                    }catch (Exception e){
-                        e.printStackTrace();
+                    FriendlyMessage decryptedM = fEncrypter.decryptMessage(friendlyMessage);
 
-                        Intent i = new Intent(MessageActivity.this, MainActivity.class);
-                        Toast.makeText(getApplicationContext(), "Incorrect password for this conversation D",
+                    //user entered the wrong password
+                    if(decryptedM == null){
+                        Toast.makeText(getApplicationContext(), "Incorrect password for conversation",
                                 Toast.LENGTH_LONG).show();
 
-                        startActivity(i);
+                        //delete password if it was saved
+                        if(!LocalKey.readKey(convoPrimaryKey, MessageActivity.this).equals("") ) {
+                            LocalKey.removeKey(convoPrimaryKey, MessageActivity.this);
+                        }
+                        
                         finish();
+
+                        return friendlyMessage;
+                    }else{
+                        return decryptedM;
                     }
-                    return fEncrypter.decryptMessage(friendlyMessage);
+
+                    //}catch (Exception e){
+
+
+                     //   e.printStackTrace();
+
+                        //Intent i = new Intent(MessageActivity.this, MainActivity.class);
+                        //Toast.makeText(getApplicationContext(), "Incorrect password for this conversation D",
+                        //        Toast.LENGTH_LONG).show();
+
+                        //startActivity(i);
+                        //finish();
+                    //}
+                    //return fEncrypter.decryptMessage(friendlyMessage);
                 }
 
             }
@@ -402,9 +421,12 @@ public class MessageActivity extends AppCompatActivity implements
 
                 //encrypt messages
                 if(fEncrypter != null){
-                    try{
-                        friendlyMessage = fEncrypter.encryptMessage(friendlyMessage);
-                    }catch(Exception e){
+                    //try{
+                    Log.wtf("CCC! ", "bout to encrypte at 410");
+
+                    friendlyMessage = fEncrypter.encryptMessage(friendlyMessage);
+                    /*}catch(Exception e){
+                        Log.wtf("C! ", "CAUGHT at 409");
                         e.printStackTrace();
 
                         Intent i = new Intent(MessageActivity.this, MainActivity.class);
@@ -414,7 +436,7 @@ public class MessageActivity extends AppCompatActivity implements
                         startActivity(i);
                         finish();
 
-                    }
+                    }*/
                 }
 
                 DatabaseOperations.addMessageToConv(friendlyMessage, mFirebaseDatabaseReference);
