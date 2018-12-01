@@ -2,12 +2,9 @@ package com.chat.secure.reilly.securechat;
 
 import android.util.Log;
 
-import java.nio.ByteBuffer;
-import java.security.SecureRandom;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.*;
 import javax.crypto.Cipher;
-import java.util.*;
+
 import java.security.spec.*;
 import java.security.MessageDigest;
 import java.util.Base64;
@@ -58,17 +55,17 @@ public class Encryption {
         return decryptedText;
     }
 
-    public FriendlyMessage encryptMessage(FriendlyMessage m){
+    public Message encryptMessage(Message m){
         try {
-            return new FriendlyMessage(encrypt(m.getText()), m.getName(), m.getPhotoUrl(), m.getImageUrl(), m.getId());
+            return new Message(encrypt(m.getText()), m.getName(), m.getPhotoUrl(), m.getImageUrl(), m.getId());
         }catch (Exception e){
             return null;
         }
     }
 
-    public FriendlyMessage decryptMessage(FriendlyMessage m){
+    public Message decryptMessage(Message m){
         try {
-            return new FriendlyMessage(decrypt(m.getText()), m.getName(), m.getPhotoUrl(), m.getImageUrl(), m.getId());
+            return new Message(decrypt(m.getText()), m.getName(), m.getPhotoUrl(), m.getImageUrl(), m.getId());
         }catch (Exception e){
             return null;
         }

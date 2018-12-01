@@ -1,12 +1,7 @@
 package com.chat.secure.reilly.securechat;
 
-import android.util.Log;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-
-import java.util.*;
 
 public class DatabaseOperations
 {
@@ -28,7 +23,7 @@ public class DatabaseOperations
 
 
     //Add message to conversation
-    public static void addMessageToConv(FriendlyMessage message, DatabaseReference conv){
+    public static void addMessageToConv(Message message, DatabaseReference conv){
 
         conv.child("messageList").push().setValue(message);
 
@@ -37,23 +32,23 @@ public class DatabaseOperations
     public static void testChatAdd()
     {
         Conversation a = new Conversation("userone1", "usertwo2");
-        a.addMessage(new FriendlyMessage("working?", "Jonathan", "photourl", "imageurl"));
-        a.addMessage(new FriendlyMessage("borked", "Jonathan", "photourl", "imageurl"));
+        a.addMessage(new Message("working?", "Jonathan", "photourl", "imageurl"));
+        a.addMessage(new Message("borked", "Jonathan", "photourl", "imageurl"));
        // pushChat(a);
         DatabaseReference firebaseR = pushChat(a);
-        addMessageToConv(new FriendlyMessage("Sophia is it working?", "Jonathan", "photourl", "imageurl"), firebaseR);
+        addMessageToConv(new Message("Sophia is it working?", "Jonathan", "photourl", "imageurl"), firebaseR);
     }
 
     public static void testMessageAdd(){
         Conversation a = new Conversation("user117", "user118");
-        //a.addMessage(new FriendlyMessage("working?", "Jonathan", "photourl", "imageurl"));
-        //a.addMessage(new FriendlyMessage("borked", "Jonathan", "photourl", "imageurl"));
+        //a.addMessage(new Message("working?", "Jonathan", "photourl", "imageurl"));
+        //a.addMessage(new Message("borked", "Jonathan", "photourl", "imageurl"));
 
 
         DatabaseReference firebaseR = pushChat(a);
-        addMessageToConv(new FriendlyMessage("Sophia is it working?", "Jonathan", "photourl", "imageurl"), firebaseR);
+        addMessageToConv(new Message("Sophia is it working?", "Jonathan", "photourl", "imageurl"), firebaseR);
 
-        FriendlyMessage m = new FriendlyMessage("borked", "Jonathan", "photourl", "imageurl");
+        Message m = new Message("borked", "Jonathan", "photourl", "imageurl");
         addMessageToConv(m, firebaseR);
     }
 }

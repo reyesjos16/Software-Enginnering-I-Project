@@ -1,6 +1,6 @@
 package com.chat.secure.reilly.securechat;
 
-public class FriendlyMessage {
+public class Message {
 
     private String id;
     private String text;
@@ -8,17 +8,17 @@ public class FriendlyMessage {
     private String photoUrl;
     private String imageUrl;
 
-    public FriendlyMessage() {
+    public Message() {
     }
 
-    public FriendlyMessage(String text, String name, String photoUrl, String imageUrl) {
+    public Message(String text, String name, String photoUrl, String imageUrl) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
         this.imageUrl = imageUrl;
     }
 
-    public FriendlyMessage(String text, String name, String photoUrl, String imageUrl, String id) {
+    public Message(String text, String name, String photoUrl, String imageUrl, String id) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;

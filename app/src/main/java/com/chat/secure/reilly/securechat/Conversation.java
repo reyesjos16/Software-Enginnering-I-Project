@@ -9,7 +9,7 @@ public class Conversation {
     public String primaryKey;
     private boolean isEncrypted; //true if convo is encrypted
 
-    List<FriendlyMessage> messageList = new LinkedList<>();
+    List<Message> messageList = new LinkedList<>();
 
     public Conversation() {
         this.user1 = "";
@@ -35,11 +35,11 @@ public class Conversation {
         this.isEncrypted = convoIsEncrypted;
     }
 
-    public List<FriendlyMessage> getMessageList(){
+    public List<Message> getMessageList(){
         return this.messageList;
     }
 
-    public void addMessage(FriendlyMessage message){
+    public void addMessage(Message message){
         messageList.add(message);
     }
 
