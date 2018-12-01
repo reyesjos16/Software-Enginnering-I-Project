@@ -495,8 +495,10 @@ public class MessageActivity extends AppCompatActivity implements
                 sendInvitation();
                 return true;
             case R.id.crash_menu:
-                Log.w("Crashlytics", "Crash button clicked");
-                causeCrash();
+                //Log.w("Crashlytics", "Crash button clicked");
+                //causeCrash();
+                Toast.makeText(getApplicationContext(), "!!!!!!!!!!!!!!!!!!",
+                        Toast.LENGTH_LONG).show();
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();

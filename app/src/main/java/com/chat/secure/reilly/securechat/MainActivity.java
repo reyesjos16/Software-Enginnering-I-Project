@@ -37,8 +37,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-//import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.AdView;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -67,7 +65,6 @@ import java.util.List;
 import java.util.Map;
 
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -271,17 +268,7 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.crash_menu:
                 //Log.w("Crashlytics", "Crash button clicked");
                 //causeCrash();
-                Encryption.test("cow");
-                /*LocalKey.writeKey("testuser1-testuser2", "keypassword", getBaseContext());
-                Log.v("LOCALKEY PRINTING KEY", LocalKey.readKey("testuser1-testuser2",  getBaseContext()));
-                if(LocalKey.removeKey("testuser1-testuser2", getBaseContext()))
-                {
-                    Log.v("LOCALKEY", "REMOVAL SUCCESS");
-                }
-                else
-                {
-                    Log.v("LOCALKEY", "REMOVAL FAILURE");
-                }*/
+
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();

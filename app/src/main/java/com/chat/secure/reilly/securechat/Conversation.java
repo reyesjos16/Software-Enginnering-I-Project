@@ -8,6 +8,8 @@ public class Conversation {
     public String user2;
     public String primaryKey;
     private boolean isEncrypted; //true if convo is encrypted
+    public boolean user1HasLeft; //true when a user has elected to leave conversation
+    public boolean user2HasLeft;
 
     List<Message> messageList = new LinkedList<>();
 
@@ -17,6 +19,9 @@ public class Conversation {
         this.primaryKey = "";
         this.messageList = null;
         this.isEncrypted = false;
+        this.user1HasLeft = false;
+        this.user2HasLeft = false;
+
     }
 
     public Conversation(String user1, String user2){
@@ -25,6 +30,8 @@ public class Conversation {
         this.setPrimaryKey(user1, user2);
         this.messageList = null;
         this.isEncrypted = false;
+        this.user1HasLeft = false;
+        this.user2HasLeft = false;
     }
 
     public Conversation(String user1, String user2, boolean convoIsEncrypted){
@@ -33,6 +40,8 @@ public class Conversation {
         this.setPrimaryKey(user1, user2);
         this.messageList = null;
         this.isEncrypted = convoIsEncrypted;
+        this.user1HasLeft = false;
+        this.user2HasLeft = false;
     }
 
     public List<Message> getMessageList(){
