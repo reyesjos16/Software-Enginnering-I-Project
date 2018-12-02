@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
 
 
 import java.util.HashMap;
@@ -134,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements
 
         //recycler view
         RecyclerView  rvConversations = (RecyclerView)findViewById(R.id.conversationRecyclerView);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL);
+        rvConversations.addItemDecoration(itemDecoration);
 
         final ConversationAdapter adapter = new ConversationAdapter(convoList);
         rvConversations.setAdapter(adapter);
