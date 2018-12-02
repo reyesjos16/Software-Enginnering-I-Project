@@ -128,6 +128,8 @@ public class MessageActivity extends AppCompatActivity implements
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
 
+    DatabaseReference convo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,8 +197,7 @@ public class MessageActivity extends AppCompatActivity implements
 
         String pathToConvo = extras.getString("conversation");
 
-        //DatabaseReference convo = mFirebaseDatabaseReference.child(pathToConvo);
-        DatabaseReference convo = FirebaseDatabase.getInstance().getReferenceFromUrl(pathToConvo);
+        convo = FirebaseDatabase.getInstance().getReferenceFromUrl(pathToConvo);
         final String convoPrimaryKey = convo.getKey();
 
         DatabaseReference messagesRef = convo.child("messageList");
@@ -404,18 +405,6 @@ public class MessageActivity extends AppCompatActivity implements
                     Log.wtf("CCC! ", "bout to encrypte at 410");
 
                     message = fEncrypter.encryptMessage(message);
-                    /*}catch(Exception e){
-                        Log.wtf("C! ", "CAUGHT at 409");
-                        e.printStackTrace();
-
-                        Intent i = new Intent(MessageActivity.this, MainActivity.class);
-                        Toast.makeText(getApplicationContext(), "Incorrect password for this conversation",
-                                Toast.LENGTH_LONG).show();
-
-                        startActivity(i);
-                        finish();
-
-                    }*/
                 }
 
                 DatabaseOperations.addMessageToConv(message, mFirebaseDatabaseReference);
@@ -491,15 +480,6 @@ public class MessageActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.invite_menu:
-                sendInvitation();
-                return true;
-            case R.id.crash_menu:
-                //Log.w("Crashlytics", "Crash button clicked");
-                //causeCrash();
-                Toast.makeText(getApplicationContext(), "!!!!!!!!!!!!!!!!!!",
-                        Toast.LENGTH_LONG).show();
-                return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
@@ -509,8 +489,17 @@ public class MessageActivity extends AppCompatActivity implements
                 startActivity(new Intent(this, SignInActivity.class));
                 finish();
                 return true;
-            case R.id.fresh_config_menu:
-                fetchConfig();
+            case R.id.leave_conversation:
+                Toast.makeText(getApplicationContext(), "Leaving conversation",
+                        Toast.LENGTH_LONG).show();
+                String currUser = mFirebaseUser.getEmail();
+                DatabaseOperations.leaveConversation(convo, currUser);
+                Intent backToMain = new Intent(MessageActivity.this, MainActivity.class);
+                backToMain.putExtra("convoLeft", convo.getKey());
+
+
+                startActivity(backToMain);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import android.content.Context;
@@ -15,9 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -41,7 +37,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             context = itemView.getContext();
 
             otherUserTextView = (TextView) itemView.findViewById(R.id.otherUser);
-            //openButton = (Button) itemView.findViewById((R.id.openConvoRecycler));
 
             itemView.setOnClickListener(this);
 
@@ -52,11 +47,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             int pos = getLayoutPosition();
 
             if(pos != RecyclerView.NO_POSITION){
-                Conversation c = convos.get(pos);
+                ConversationLite c = convos.get(pos);
                 //Log.v("pos is:", c.getOtherUser(user.getEmail()));
                 DatabaseReference dbConvo = FirebaseDatabase.getInstance().getReference().child("chats").child(c.getPrimaryKey());
 
-                if(c.isEncrypted()){
+                if(c.convoIsEncrypted()){
                     Intent i = new Intent(context, GetKeyActivity.class);
                     //passes path to db ref as a string
                     i.putExtra("conversation", dbConvo.toString());
@@ -71,24 +66,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     context.startActivity(i);
 
                 }
-
-                           }
+            }
         }
     }
 
-    private List<Conversation>  convos;
+    private List<ConversationLite>  convos;
 
-    public ConversationAdapter(List<Conversation> c){
+    public ConversationAdapter(List<ConversationLite> c){
         convos = c;
 
 
     }
-
-    public void updateList(List<Conversation> newConvoList){
-        this.convos = newConvoList;
-        notifyDataSetChanged();
-    }
-
 
     @NonNull
     @Override
@@ -106,7 +94,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ConversationAdapter.ViewHolder holder, int position) {
-        Conversation c = convos.get(position);
+        ConversationLite c = convos.get(position);
 
         String otherUser = c.getOtherUser(this.currentUser);
 

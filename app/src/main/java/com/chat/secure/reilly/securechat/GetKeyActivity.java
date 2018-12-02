@@ -34,7 +34,6 @@ public class GetKeyActivity extends AppCompatActivity {
         String savedKey = LocalKey.readKey(convoPrimaryKey,GetKeyActivity.this);
 
         if(!savedKey.equals("")){
-            Log.v("k", "key was saved");
             Intent i = new Intent(GetKeyActivity.this, MessageActivity.class);
             //passes path to db ref as a string
             i.putExtra("conversation", pathToConvo);

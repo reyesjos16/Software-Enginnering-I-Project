@@ -34,7 +34,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.appinvite.AppInviteInvitation;
@@ -104,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements
     ChildEventListener convoListener;
 
 
+    final List<ConversationLite> convoList = new LinkedList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,16 +172,14 @@ public class MainActivity extends AppCompatActivity implements
         RecyclerView  rvConversations = (RecyclerView)findViewById(R.id.conversationRecyclerView);
 
         //test convo list
-        final List<Conversation> convoList = new LinkedList<Conversation>();
 
         final ConversationAdapter adapter = new ConversationAdapter(convoList);
-
         rvConversations.setAdapter(adapter);
         rvConversations.setLayoutManager(new LinearLayoutManager(this));
 
 
-
-        final List<Conversation> chatList = new ArrayList<Conversation>();
+        rvConversations.setAdapter(adapter);
+        rvConversations.setLayoutManager(new LinearLayoutManager(this));
 
         final String currentUserEmail = mFirebaseUser.getEmail();
 
@@ -188,29 +187,86 @@ public class MainActivity extends AppCompatActivity implements
 
 
         chatRef = FirebaseDatabase.getInstance().getReference().child("chats");
+        /*chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    ConversationLite cL = dataSnapshot.getValue(ConversationLite.class);
+
+
+                    if(cL.isMember(currentUserEmail)){
+                        boolean wasIn = false;
+                        for(int i = 0; i < convoList.size(); i++){
+                            ConversationLite curr = convoList.get(i);
+                            if(curr.getPrimaryKey().equals(cL.getPrimaryKey())){
+                                wasIn = true;
+                            }
+                        }
+                        if(wasIn == false && cL.hasLeft(currentUserEmail) == false){
+                            convoList.add(0, cL);
+                            adapter.notifyItemInserted(0);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+
         convoListener = chatRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.exists()){
-                    String u1 = dataSnapshot.child("user1").getValue(String.class);
-                    String u2 = dataSnapshot.child("user2").getValue(String.class);
-                    boolean isE = dataSnapshot.child("isEncrypted").getValue(Boolean.class);
-                    Conversation c = new Conversation(u1,u2, isE);
+                    ConversationLite cL = dataSnapshot.getValue(ConversationLite.class);
 
-                    if(c.isMember(currentUserEmail)){
-                        convoList.add(c);
+                    if(cL.isMember(currentUserEmail)){
+                        boolean wasIn = false;
+                        for(int i = 0; i < convoList.size(); i++){
+                            ConversationLite curr = convoList.get(i);
+                            if(curr.getPrimaryKey().equals(cL.getPrimaryKey())){
+                                wasIn = true;
+                            }
+                        }
+                        if(wasIn == false && cL.hasLeft(currentUserEmail) == false){
+                            convoList.add(0, cL);
+                            adapter.notifyItemInserted(0);
+                        }
+
                     }
 
                 }
-
-                adapter.updateList(convoList);
-
-
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                ConversationLite cL = dataSnapshot.getValue(ConversationLite.class);
+                String pk = String.valueOf(convoList.size());
 
+                if(cL.isMember(currentUserEmail)){
+                    if(cL.hasLeft(currentUserEmail)){
+                        for(int i = 0; i < convoList.size(); i++){
+                            ConversationLite curr = convoList.get(i);
+                            if(curr.getPrimaryKey().equals(cL.getPrimaryKey())){
+
+                                //remove key if saved
+                                if(!LocalKey.readKey(curr.getPrimaryKey(), MainActivity.this).equals("") ) {
+                                    LocalKey.removeKey(curr.getPrimaryKey(), MainActivity.this);
+                                }
+
+                                //update recycler view
+                                convoList.remove(i);
+                                adapter.notifyItemRemoved(i);
+                                adapter.notifyItemRangeChanged(i, convoList.size());
+                            }
+
+                        }
+                    }
+
+                }
             }
 
             @Override
@@ -243,33 +299,29 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
+
         //mFirebaseAdapter.startListening();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //chatRef.removeEventListener(convoListener);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+
         inflater.inflate(R.menu.main_menu, menu);
+        MenuItem leaveChat = (MenuItem) menu.findItem(R.id.leave_conversation);
+        leaveChat.setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.invite_menu:
-                sendInvitation();
-                return true;
-            case R.id.crash_menu:
-                //Log.w("Crashlytics", "Crash button clicked");
-                //causeCrash();
-
-                return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
@@ -278,9 +330,6 @@ public class MainActivity extends AppCompatActivity implements
                 mPhotoUrl = null;
                 startActivity(new Intent(this, SignInActivity.class));
                 finish();
-                return true;
-            case R.id.fresh_config_menu:
-                fetchConfig();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
