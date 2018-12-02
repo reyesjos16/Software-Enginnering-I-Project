@@ -405,18 +405,6 @@ public class MessageActivity extends AppCompatActivity implements
                     Log.wtf("CCC! ", "bout to encrypte at 410");
 
                     message = fEncrypter.encryptMessage(message);
-                    /*}catch(Exception e){
-                        Log.wtf("C! ", "CAUGHT at 409");
-                        e.printStackTrace();
-
-                        Intent i = new Intent(MessageActivity.this, MainActivity.class);
-                        Toast.makeText(getApplicationContext(), "Incorrect password for this conversation",
-                                Toast.LENGTH_LONG).show();
-
-                        startActivity(i);
-                        finish();
-
-                    }*/
                 }
 
                 DatabaseOperations.addMessageToConv(message, mFirebaseDatabaseReference);
@@ -496,10 +484,7 @@ public class MessageActivity extends AppCompatActivity implements
                 sendInvitation();
                 return true;
             case R.id.crash_menu:
-                //Log.w("Crashlytics", "Crash button clicked");
-                //causeCrash();
-                Toast.makeText(getApplicationContext(), "!!!!!!!!!!!!!!!!!!",
-                        Toast.LENGTH_LONG).show();
+
                 return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
@@ -521,6 +506,7 @@ public class MessageActivity extends AppCompatActivity implements
                 DatabaseOperations.leaveConversation(convo, currUser);
                 Intent backToMain = new Intent(MessageActivity.this, MainActivity.class);
                 backToMain.putExtra("convoLeft", convo.getKey());
+
 
                 startActivity(backToMain);
                 finish();

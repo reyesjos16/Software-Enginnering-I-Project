@@ -89,6 +89,19 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         notifyDataSetChanged();
     }
 
+    public void removeItem(int pos){
+        this.convos.remove(pos);
+        notifyItemRemoved(pos);
+        notifyItemRangeChanged(pos, convos.size());
+
+    }
+
+    public List<ConversationLite> getList(){
+        return this.convos;
+    }
+
+
+
 
     @NonNull
     @Override

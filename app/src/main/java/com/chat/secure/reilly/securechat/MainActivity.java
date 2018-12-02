@@ -34,7 +34,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.appinvite.AppInviteInvitation;
@@ -175,35 +174,8 @@ public class MainActivity extends AppCompatActivity implements
         //test convo list
 
         final ConversationAdapter adapter = new ConversationAdapter(convoList);
-
-        Bundle extras = getIntent().getExtras();
-
-        String convoLeftPK;
-
-        //remove appropriate item form list
-
-        Intent currIntent = getIntent();
-        if (currIntent.hasExtra("convoLeft")) {
-            convoLeftPK = extras.getString("convoLeft");
-            Toast.makeText(getApplicationContext(), convoLeftPK,
-                    Toast.LENGTH_LONG).show();
-
-            for(int i = 0; i < convoList.size(); i++){
-                ConversationLite currC = convoList.get(i);
-                Log.wtf("pk: ", currC.getPrimaryKey());
-
-                if(currC.getPrimaryKey().equals(convoLeftPK)){
-                    Toast.makeText(getApplicationContext(), "Found",
-                            Toast.LENGTH_LONG).show();
-                    Log.wtf("DELETED", "");
-                    ((LinkedList<ConversationLite>) convoList).remove(i);
-                    i--;
-                    adapter.updateList(convoList);
-
-                    //break;
-                }
-            }
-        }
+        rvConversations.setAdapter(adapter);
+        rvConversations.setLayoutManager(new LinearLayoutManager(this));
 
 
         rvConversations.setAdapter(adapter);
@@ -215,27 +187,82 @@ public class MainActivity extends AppCompatActivity implements
 
 
         chatRef = FirebaseDatabase.getInstance().getReference().child("chats");
+        /*chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    ConversationLite cL = dataSnapshot.getValue(ConversationLite.class);
+
+
+                    if(cL.isMember(currentUserEmail)){
+                        boolean wasIn = false;
+                        for(int i = 0; i < convoList.size(); i++){
+                            ConversationLite curr = convoList.get(i);
+                            if(curr.getPrimaryKey().equals(cL.getPrimaryKey())){
+                                wasIn = true;
+                            }
+                        }
+                        if(wasIn == false && cL.hasLeft(currentUserEmail) == false){
+                            convoList.add(0, cL);
+                            adapter.notifyItemInserted(0);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+
         convoListener = chatRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(dataSnapshot.exists()){
                     ConversationLite cL = dataSnapshot.getValue(ConversationLite.class);
 
-
                     if(cL.isMember(currentUserEmail)){
-                        convoList.add(cL);
+                        boolean wasIn = false;
+                        for(int i = 0; i < convoList.size(); i++){
+                            ConversationLite curr = convoList.get(i);
+                            if(curr.getPrimaryKey().equals(cL.getPrimaryKey())){
+                                wasIn = true;
+                            }
+                        }
+                        if(wasIn == false && cL.hasLeft(currentUserEmail) == false){
+                            convoList.add(0, cL);
+                            adapter.notifyItemInserted(0);
+                        }
+
                     }
 
                 }
 
-                adapter.updateList(convoList);
 
 
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                ConversationLite cL = dataSnapshot.getValue(ConversationLite.class);
+                String pk = String.valueOf(convoList.size());
 
+                if(cL.isMember(currentUserEmail)){
+                    if(cL.hasLeft(currentUserEmail)){
+                        for(int i = 0; i < convoList.size(); i++){
+                            ConversationLite curr = convoList.get(i);
+                            if(curr.getPrimaryKey().equals(cL.getPrimaryKey())){
+                                convoList.remove(i);
+                                adapter.notifyItemRemoved(i);
+                                adapter.notifyItemRangeChanged(i, convoList.size());
+                            }
+
+                        }
+                    }
+
+                }
             }
 
             @Override
@@ -294,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.crash_menu:
                 //Log.w("Crashlytics", "Crash button clicked");
                 //causeCrash();
+                String pk = String.valueOf(convoList.size());
 
                 return true;
             case R.id.sign_out_menu:
