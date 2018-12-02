@@ -101,7 +101,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         String otherUser = c.getOtherUser(this.currentUser);
 
         TextView otherUserTextView = holder.otherUserTextView;
-        otherUserTextView.setText(otherUser);
+        otherUserTextView.setText(otherUser.replaceAll("@gmail.com$",""));
 
         ImageView lockImage = holder.lockImage;
         if(c.convoIsEncrypted()) {
