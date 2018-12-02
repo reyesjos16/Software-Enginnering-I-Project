@@ -1,18 +1,4 @@
-package com.chat.secure.reilly.securechat; /**
- * Copyright Google Inc. All Rights Reserved.
- * <p/>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.chat.secure.reilly.securechat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,8 +31,6 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-//import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.AdView;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -56,12 +40,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.appindexing.Action;
-import com.google.firebase.appindexing.FirebaseAppIndex;
-import com.google.firebase.appindexing.FirebaseUserActions;
-import com.google.firebase.appindexing.Indexable;
-import com.google.firebase.appindexing.builders.Indexables;
-import com.google.firebase.appindexing.builders.PersonBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -98,7 +76,6 @@ public class MessageActivity extends AppCompatActivity implements
     }
 
     private static final String TAG = "MainActivity";
-    //public static final String MESSAGES_CHILD = "messages";
     public static final String MESSAGES_CHILD = "messageList";
 
     private static final int REQUEST_INVITE = 1;
@@ -124,7 +101,6 @@ public class MessageActivity extends AppCompatActivity implements
     private FirebaseAnalytics mFirebaseAnalytics;
     private EditText mMessageEditText;
     private ImageView mAddMessageImageView;
-    //private AdView mAdView;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
 
@@ -302,13 +278,6 @@ public class MessageActivity extends AppCompatActivity implements
                             .into(viewHolder.messengerImageView);
                 }
 
-                if (message.getText() != null) {
-                    // write this message to the on-device index
-                    FirebaseAppIndex.getInstance().update(getMessageIndexable(message));
-                }
-
-                // log a view action on it
-                FirebaseUserActions.getInstance().end(getMessageViewAction(message));
             }
         };
 
@@ -329,11 +298,6 @@ public class MessageActivity extends AppCompatActivity implements
 
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
-
-        // Initialize and request AdMob ad.
-        // mAdView = (AdView) findViewById(R.id.adView);
-        // AdRequest adRequest = new AdRequest.Builder().build();
-        // mAdView.loadAd(adRequest);
 
         // Initialize Firebase Measurement.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -401,54 +365,21 @@ public class MessageActivity extends AppCompatActivity implements
 
                 //encrypt messages
                 if(fEncrypter != null){
-                    //try{
-                    Log.wtf("CCC! ", "bout to encrypte at 410");
-
                     message = fEncrypter.encryptMessage(message);
                 }
 
                 DatabaseOperations.addMessageToConv(message, mFirebaseDatabaseReference);
 
-                //mFirebaseDatabaseReference.child(MESSAGES_CHILD).push().setValue(message);
                 mMessageEditText.setText("");
                 mFirebaseAnalytics.logEvent(MESSAGE_SENT_EVENT, null);
             }
         });
     }
 
-    private Action getMessageViewAction(Message message) {
-        return new Action.Builder(Action.Builder.VIEW_ACTION)
-                .setObject(message.getName(), MESSAGE_URL.concat(message.getId()))
-                .setMetadata(new Action.Metadata.Builder().setUpload(false))
-                .build();
-    }
-
-    private Indexable getMessageIndexable(Message message) {
-        PersonBuilder sender = Indexables.personBuilder()
-                .setIsSelf(mUsername.equals(message.getName()))
-                .setName(message.getName())
-                .setUrl(MESSAGE_URL.concat(message.getId() + "/sender"));
-
-        PersonBuilder recipient = Indexables.personBuilder()
-                .setName(mUsername)
-                .setUrl(MESSAGE_URL.concat(message.getId() + "/recipient"));
-
-        Indexable messageToIndex = Indexables.messageBuilder()
-                .setName(message.getText())
-                .setUrl(MESSAGE_URL.concat(message.getId()))
-                .setSender(sender)
-                .setRecipient(recipient)
-                .build();
-
-        return messageToIndex;
-    }
 
 
     @Override
     public void onPause() {
-        //if (mAdView != null) {
-        //    mAdView.pause();
-        //}
         mFirebaseAdapter.stopListening();
         super.onPause();
     }
@@ -456,17 +387,11 @@ public class MessageActivity extends AppCompatActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        //if (mAdView != null) {
-        //    mAdView.resume();
-        //}
         mFirebaseAdapter.startListening();
     }
 
     @Override
     public void onDestroy() {
-        //if (mAdView != null) {
-        //    mAdView.destroy();
-        //}
         super.onDestroy();
     }
 
@@ -506,17 +431,6 @@ public class MessageActivity extends AppCompatActivity implements
         }
     }
 
-    private void causeCrash() {
-        throw new NullPointerException("Fake null pointer exception");
-    }
-
-    private void sendInvitation() {
-        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
-                .setMessage(getString(R.string.invitation_message))
-                .setCallToActionText(getString(R.string.invitation_cta))
-                .build();
-        startActivityForResult(intent, REQUEST_INVITE);
-    }
 
     // Fetch the config to determine the allowed length of messages.
     public void fetchConfig() {
