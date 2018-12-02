@@ -7,8 +7,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.util.Log;
-import android.widget.Toast;
-import android.app.Activity;
 
 
 public class DatabaseOperations
@@ -57,7 +55,7 @@ public class DatabaseOperations
                         c.setUser2HasLeft(true);
                     }
 
-                    if(c.isAbandoned()){
+                    if(c.convoIsAbandoned()){
                         r.removeValue();
                     }
 

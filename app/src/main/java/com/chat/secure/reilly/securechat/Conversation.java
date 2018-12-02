@@ -113,7 +113,7 @@ public class Conversation {
         return user2HasLeft;
     }
 
-    public boolean isEncrypted() {
+    public boolean convoIsEncrypted() {
         return this.isEncrypted;
     }
 
@@ -151,12 +151,8 @@ public class Conversation {
         }
     }
 
-    //public void leaveConversation(String username){
-
-    //}
-
     //returns true if all members have left the conversation
-    public boolean isAbandoned(){
+    public boolean convoIsAbandoned(){
         return this.user1HasLeft && this.user2HasLeft;
     }
 }

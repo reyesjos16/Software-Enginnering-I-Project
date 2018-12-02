@@ -239,9 +239,6 @@ public class MainActivity extends AppCompatActivity implements
                     }
 
                 }
-
-
-
             }
 
             @Override
@@ -254,6 +251,13 @@ public class MainActivity extends AppCompatActivity implements
                         for(int i = 0; i < convoList.size(); i++){
                             ConversationLite curr = convoList.get(i);
                             if(curr.getPrimaryKey().equals(cL.getPrimaryKey())){
+
+                                //remove key if saved
+                                if(!LocalKey.readKey(curr.getPrimaryKey(), MainActivity.this).equals("") ) {
+                                    LocalKey.removeKey(curr.getPrimaryKey(), MainActivity.this);
+                                }
+
+                                //update recycler view
                                 convoList.remove(i);
                                 adapter.notifyItemRemoved(i);
                                 adapter.notifyItemRangeChanged(i, convoList.size());
@@ -302,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //chatRef.removeEventListener(convoListener);
+
     }
 
     @Override

@@ -102,7 +102,7 @@ public class ConversationLite {
         return user2HasLeft;
     }
 
-    public boolean isEncrypted() {
+    public boolean convoIsEncrypted() {
         return this.isEncrypted;
     }
 
@@ -141,7 +141,7 @@ public class ConversationLite {
     }
 
     //returns true if all members have left the conversation
-    public boolean isAbandoned(){
+    public boolean convoIsAbandoned(){
         return this.user1HasLeft && this.user2HasLeft;
     }
 }
