@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.content.Context;
@@ -28,6 +29,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
 
         public TextView otherUserTextView;
+        public ImageView lockImage;
         //public Button openButton;
 
         private final Context context;
@@ -37,7 +39,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             context = itemView.getContext();
 
             otherUserTextView = (TextView) itemView.findViewById(R.id.otherUser);
-
+            lockImage = (ImageView) itemView.findViewById(R.id.lockImage);
             itemView.setOnClickListener(this);
 
         }
@@ -101,7 +103,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         TextView otherUserTextView = holder.otherUserTextView;
         otherUserTextView.setText(otherUser);
 
-        //Button openButton = holder.openButton;
+        ImageView lockImage = holder.lockImage;
+        if(c.convoIsEncrypted()) {
+            lockImage.setImageResource(R.drawable.locked);
+        }else{
+            lockImage.setImageResource(R.drawable.unlocked);
+        }
 
     }
 
