@@ -308,22 +308,16 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+
         inflater.inflate(R.menu.main_menu, menu);
+        MenuItem leaveChat = (MenuItem) menu.findItem(R.id.leave_conversation);
+        leaveChat.setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.invite_menu:
-                sendInvitation();
-                return true;
-            case R.id.crash_menu:
-                //Log.w("Crashlytics", "Crash button clicked");
-                //causeCrash();
-                String pk = String.valueOf(convoList.size());
-
-                return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
@@ -332,9 +326,6 @@ public class MainActivity extends AppCompatActivity implements
                 mPhotoUrl = null;
                 startActivity(new Intent(this, SignInActivity.class));
                 finish();
-                return true;
-            case R.id.fresh_config_menu:
-                fetchConfig();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

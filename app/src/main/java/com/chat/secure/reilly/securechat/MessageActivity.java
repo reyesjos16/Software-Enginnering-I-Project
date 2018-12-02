@@ -480,12 +480,6 @@ public class MessageActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.invite_menu:
-                sendInvitation();
-                return true;
-            case R.id.crash_menu:
-
-                return true;
             case R.id.sign_out_menu:
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
@@ -495,10 +489,6 @@ public class MessageActivity extends AppCompatActivity implements
                 startActivity(new Intent(this, SignInActivity.class));
                 finish();
                 return true;
-            case R.id.fresh_config_menu:
-                fetchConfig();
-                return true;
-
             case R.id.leave_conversation:
                 Toast.makeText(getApplicationContext(), "Leaving conversation",
                         Toast.LENGTH_LONG).show();
