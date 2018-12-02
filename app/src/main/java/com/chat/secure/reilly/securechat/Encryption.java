@@ -7,8 +7,7 @@ import javax.crypto.Cipher;
 
 import java.security.spec.*;
 import java.security.MessageDigest;
-import java.util.Base64;
-
+import android.util.Base64;
 
 
 public class Encryption {
@@ -42,14 +41,14 @@ public class Encryption {
     public String encrypt(String plainText) throws Exception {
         cipher.init(Cipher.ENCRYPT_MODE, key, spec);
         byte[] encrypted = cipher.doFinal(plainText.getBytes("UTF-8"));
-        String encryptedText = new String(Base64.getEncoder().encode(encrypted), "UTF-8");
+        String encryptedText = new String(Base64.encodeToString(encrypted, Base64.DEFAULT));
 
         return encryptedText;
     }
 
     public String decrypt(String cryptedText) throws Exception {
         cipher.init(Cipher.DECRYPT_MODE, key, spec);
-        byte[] bytes = Base64.getDecoder().decode(cryptedText);
+        byte[] bytes = Base64.decode(cryptedText, Base64.DEFAULT);
         byte[] decrypted = cipher.doFinal(bytes);
         String decryptedText = new String(decrypted, "UTF-8");
 
