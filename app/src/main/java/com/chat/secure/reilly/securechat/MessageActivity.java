@@ -344,7 +344,7 @@ public class MessageActivity extends AppCompatActivity implements
             public void afterTextChanged(Editable editable) {
             }
         });
-
+/*
         mAddMessageImageView = (ImageView) findViewById(R.id.addMessageImageView);
         mAddMessageImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -355,7 +355,7 @@ public class MessageActivity extends AppCompatActivity implements
                 startActivityForResult(intent, REQUEST_IMAGE);
             }
         });
-
+*/
         mSendButton = (Button) findViewById(R.id.sendButton);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
