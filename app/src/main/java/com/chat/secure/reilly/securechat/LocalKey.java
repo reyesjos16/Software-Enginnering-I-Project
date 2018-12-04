@@ -15,45 +15,7 @@ import java.io.OutputStreamWriter;
 
 public class LocalKey
 {
-    /*
-    public void writeToFile(String filename, String key, Context ctx)
-    {
-        FileOutputStream outputstream;
-        try
-        {
-            outputstream = ctx.openFileOutput("key-" + filename, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(outputstream);
-            oos.write(key.getBytes());
-            oos.close();
-        }
-        catch(FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
 
-    public String readFromFile(String filename, Context ctx)
-    {
-        FileInputStream filestream;
-        try
-        {
-            filestream = ctx.openFileInput("key-" + filename);
-
-        }
-        catch(FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    */
 
     //Example input:
     // writeKey("cat-dog", "password", getBaseContext())
